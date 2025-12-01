@@ -32,8 +32,8 @@ export default function Home() {
               <Link to="/docs" className="btn btn-primary" style={{ fontSize: '1.1rem', padding: '1rem 2rem' }}>
                 Get Started <ArrowRight size={20} />
               </Link>
-              <a href="https://github.com/Ghua8088/pytron" target="_blank" className="btn btn-secondary" style={{ fontSize: '1.1rem', padding: '1rem 2rem' }}>
-                View on GitHub
+              <a href="https://pypi.org/project/pytron-kit/" target="_blank" className="btn btn-secondary" style={{ fontSize: '1.1rem', padding: '1rem 2rem' }}>
+                View on PyPi
               </a>
             </div>
           </motion.div>
