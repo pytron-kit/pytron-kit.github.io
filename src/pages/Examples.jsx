@@ -21,8 +21,8 @@ export default function Examples() {
           description="A modern, matte-black system monitor and task manager. Features real-time graphs, process management, and a custom frameless window."
           tags={['React', 'System Monitor', 'Real-time']}
           repoUrl="https://github.com/Ghua8088/pyDash"
-          icon="/examples/pydash/logo.png"
-          image="/examples/pydash/screenshot.png"
+          icon={`${import.meta.env.BASE_URL}examples/pydash/logo.png`}
+          image={`${import.meta.env.BASE_URL}examples/pydash/screenshot.png`}
           featured={true}
         />
 
@@ -31,8 +31,8 @@ export default function Examples() {
           description="An experimental, lightweight IDE built with Pytron. Features Monaco Editor, file system operations, and a VS Code-like experience."
           tags={['React', 'Monaco Editor', 'IDE']}
           repoUrl="https://github.com/Ghua8088/TerminateCode"
-          icon="/examples/terminatecode/logo.png"
-          image="/examples/terminatecode/screenshot.png"
+          icon={`${import.meta.env.BASE_URL}examples/terminatecode/logo.png`}
+          image={`${import.meta.env.BASE_URL}examples/terminatecode/screenshot.png`}
           featured={true}
         />
 

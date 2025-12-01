@@ -19,7 +19,7 @@ export default function Navbar() {
     }}>
       <div className="container" style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
         <Link to="/" className="logo" style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'white', fontWeight: 'bold', fontSize: '1.2rem' }}>
-          <img src="/pytron.png" alt="Pytron" style={{ height: '32px' }} />
+          <img src={`${import.meta.env.BASE_URL}pytron.png`} alt="Pytron" style={{ height: '32px' }} />
           PYTRON
         </Link>
         
