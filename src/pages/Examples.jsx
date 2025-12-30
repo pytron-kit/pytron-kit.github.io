@@ -17,6 +17,18 @@ export default function Examples() {
         gap: '2rem'
       }}>
         <ExampleCard
+          title="Bite"
+          description="A production-ready launcher app (Spotlight/Raycast alternative). Features local file search, system commands, and calculator. Full source available."
+          tags={['React', 'File System', 'Launcher', 'Python']}
+          repoUrl={`${import.meta.env.BASE_URL}bite`}
+          icon={`${import.meta.env.BASE_URL}examples/bite/logo.png`}
+          featured={true}
+          buttonText="View Details"
+          buttonIcon={<Layout size={18} />}
+          isInternal={true}
+        />
+
+        <ExampleCard
           title="Agentic"
           description="The Ultimate Desktop AI Assistant. A local-first powerhouse with 70+ tools, deep system integration, and a stunning glassmorphism UI. Built on Pytron-Kit."
           tags={['AI', 'LLM', 'React', 'Ollama']}
@@ -60,7 +72,15 @@ export default function Examples() {
   );
 }
 
-function ExampleCard({ title, description, tags, repoUrl, icon, fallbackIcon, image, featured, buttonText = "View Source", buttonIcon = <Github size={18} /> }) {
+import { Link } from 'react-router-dom';
+
+function ExampleCard({ title, description, tags, repoUrl, icon, fallbackIcon, image, featured, buttonText = "View Source", buttonIcon = <Github size={18} />, isInternal = false }) {
+  const ButtonContent = () => (
+    <>
+      {buttonIcon} {buttonText}
+    </>
+  );
+
   return (
     <motion.div
       whileHover={{ y: -5 }}
@@ -123,15 +143,25 @@ function ExampleCard({ title, description, tags, repoUrl, icon, fallbackIcon, im
           ))}
         </div>
 
-        <a
-          href={repoUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn btn-secondary"
-          style={{ width: '100%', justifyContent: 'center' }}
-        >
-          {buttonIcon} {buttonText}
-        </a>
+        {isInternal ? (
+          <Link
+            to={repoUrl.replace(import.meta.env.BASE_URL, '/')} // Remove base for internal routing to avoid double prefix if used
+            className="btn btn-secondary"
+            style={{ width: '100%', justifyContent: 'center' }}
+          >
+            <ButtonContent />
+          </Link>
+        ) : (
+          <a
+            href={repoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-secondary"
+            style={{ width: '100%', justifyContent: 'center' }}
+          >
+            <ButtonContent />
+          </a>
+        )}
       </div>
     </motion.div>
   );

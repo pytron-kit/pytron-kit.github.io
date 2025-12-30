@@ -84,6 +84,17 @@ function App() {
         Package your app for Windows (NSIS), macOS (DMG), or Linux (Deb) with one command. Pytron handles the complexity of manifests, icons, and bundling.
       </p>
       <pre><code>{`pytron package --installer`}</code></pre>
+
+      <h2>Built-in Auto Updater</h2>
+      <p>
+        Pytron includes a robust <code>Updater</code> module out of the box. Simply host a JSON manifest file and your binary, and Pytron handles checking for updates, verifying versions, and installing the new release (detached process).
+      </p>
+      <pre><code className="language-python">{`from pytron.updater import Updater
+updater = Updater()
+
+@app.expose
+def check_updates():
+    return updater.check("https://myapp.com/update.json")`}</code></pre>
     </div>
   );
 }

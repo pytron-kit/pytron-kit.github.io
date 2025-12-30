@@ -4,6 +4,7 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 import Docs from './pages/Docs';
 import Examples from './pages/Examples';
+import BitePage from './pages/Bite';
 import './App.css';
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/docs/*" element={<Docs />} />
           <Route path="/examples" element={<Examples />} />
+          <Route path="/bite" element={<BitePage />} />
         </Routes>
         <Footer />
       </div>
