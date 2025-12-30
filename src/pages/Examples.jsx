@@ -7,7 +7,7 @@ export default function Examples() {
       <div style={{ textAlign: 'center', padding: '4rem 0' }}>
         <h1 style={{ fontSize: '3rem', marginBottom: '1rem' }}>Examples</h1>
         <p style={{ fontSize: '1.2rem', maxWidth: '600px', margin: '0 auto' }}>
-          Explore what's possible with Pytron. From simple utilities to complex desktop applications.
+          Explore what's possible with Pytron Kit. From simple utilities to complex desktop applications.
         </p>
       </div>
 
@@ -21,7 +21,8 @@ export default function Examples() {
           description="A production-ready launcher app (Spotlight/Raycast alternative). Features local file search, system commands, and calculator. Full source available."
           tags={['React', 'File System', 'Launcher', 'Python']}
           repoUrl={`${import.meta.env.BASE_URL}bite`}
-          icon={`${import.meta.env.BASE_URL}examples/bite/logo.png`}
+          icon={`${import.meta.env.BASE_URL}examples/bite/bite.png`}
+          image={`${import.meta.env.BASE_URL}examples/bite/screenshot.png`}
           featured={true}
           buttonText="View Details"
           buttonIcon={<Layout size={18} />}
@@ -52,7 +53,7 @@ export default function Examples() {
 
         <ExampleCard
           title="TerminateCode"
-          description="An experimental, lightweight IDE built with Pytron. Features Monaco Editor, file system operations, and a VS Code-like experience."
+          description="An experimental, lightweight IDE built with Pytron Kit. Features Monaco Editor, file system operations, and a VS Code-like experience."
           tags={['React', 'Monaco Editor', 'IDE']}
           repoUrl="https://github.com/Ghua8088/TerminateCode"
           icon={`${import.meta.env.BASE_URL}examples/terminatecode/logo.png`}

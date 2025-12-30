@@ -62,6 +62,8 @@ export default function BitePage() {
                         v0.3.0 Now Available
                     </div>
 
+                    <img src="/examples/bite/bite-banner.png" alt="Bite Banner" style={{ width: '100%', maxWidth: '600px', height: 'auto', marginBottom: '2rem', borderRadius: '1rem', boxShadow: '0 20px 40px -10px rgba(0,0,0,0.5)' }} />
+
                     <h1 style={{
                         fontSize: '5rem',
                         fontWeight: 800,
@@ -71,7 +73,7 @@ export default function BitePage() {
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent'
                     }}>
-                        Bite
+
                     </h1>
 
                     <p style={{
@@ -189,12 +191,12 @@ export default function BitePage() {
                     <CodeBlock code={`# 1. Clone the repository
 git clone https://github.com/Ghua8088/Bite.git
 
-# 2. Install Pytron Framework
-pip install pytron
+# 2. Install Pytron Kit
+pip install pytron-kit
+pytron install
 
 # 3. Run the App
-cd Bite
-pytron run app.py`} />
+python app.py`} />
 
                     <div style={{ marginTop: '2rem', display: 'flex', gap: '1rem', alignItems: 'center' }}>
                         <Star size={18} fill="#fbbf24" color="#fbbf24" />
