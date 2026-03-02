@@ -86,7 +86,25 @@
   </url>
   <url>
     <loc>https://pytron-kit.github.io/requests-studio</loc>
-    <lastmod>2026-01-22</lastmod>
+    <lastmod>2026-03-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pytron-kit.github.io/agentic</loc>
+    <lastmod>2026-03-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pytron-kit.github.io/pydash</loc>
+    <lastmod>2026-03-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pytron-kit.github.io/terminate-code</loc>
+    <lastmod>2026-03-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

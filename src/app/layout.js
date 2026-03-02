@@ -16,6 +16,7 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lobster&display=swap" rel="stylesheet" />
+        <link rel="icon" type="image/png" href="/pytron.png" />
         <meta name="google-site-verification" content="yB5w9WFiUfG90XacTiz3EZHSqfULOnx1qJvHa76QFUw" />
       </head>
       <body>
