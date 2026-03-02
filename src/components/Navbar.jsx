@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom';
+"use client";
+import Link from 'next/link';
 import { Github } from 'lucide-react';
 import Search from './Search';
 
@@ -18,9 +19,9 @@ export default function Navbar() {
       alignItems: 'center'
     }}>
       <div className="container" style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
-        <Link to="/" className="logo" style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'white', fontWeight: 700, fontSize: '1.25rem', letterSpacing: '0.02em' }}>
+        <Link href="/" className="logo" style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'white', fontWeight: 700, fontSize: '1.25rem', letterSpacing: '0.02em' }}>
           <img
-            src={`${import.meta.env.BASE_URL}pytron.png`}
+            src="/pytron.png"
             alt="Pytron-kit"
             style={{ height: '32px', width: '32px' }}
             decoding="async"
@@ -33,16 +34,16 @@ export default function Navbar() {
           <Search />
           <div className="desktop-only" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <div style={{ height: '16px', width: '1px', background: 'var(--border-color)', margin: '0 0.5rem' }} />
-            <Link to="/docs" style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', fontWeight: 500, transition: 'color 0.2s' }}>Docs</Link>
-            <Link to="/examples" style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', fontWeight: 500, transition: 'color 0.2s' }}>Examples</Link>
-            <a 
-              href="https://github.com/Ghua8088/pytron" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              style={{ 
-                color: 'var(--text-primary)', 
-                display: 'flex', 
-                alignItems: 'center', 
+            <Link href="/docs" style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', fontWeight: 500, transition: 'color 0.2s' }}>Docs</Link>
+            <Link href="/examples" style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', fontWeight: 500, transition: 'color 0.2s' }}>Examples</Link>
+            <a
+              href="https://github.com/Ghua8088/pytron"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                color: 'var(--text-primary)',
+                display: 'flex',
+                alignItems: 'center',
                 gap: '0.5rem',
                 fontSize: '0.9rem',
                 fontWeight: 500,

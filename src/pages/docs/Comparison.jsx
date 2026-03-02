@@ -1,3 +1,4 @@
+"use client";
 import SEO from '../../components/SEO';
 
 export default function Comparison() {

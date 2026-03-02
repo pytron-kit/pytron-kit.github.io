@@ -1,5 +1,6 @@
+"use client";
+import Link from 'next/link';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { Compass, X, Home, Book, Box, Github, Zap } from 'lucide-react';
 
 export default function GlobalMobileNav() {
@@ -60,10 +61,10 @@ export default function GlobalMobileNav() {
                 }}
             >
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                    <NavCard to="/" icon={<Home size={24} />} label="Home" color="var(--primary-color)" onClick={toggleMenu} />
-                    <NavCard to="/docs" icon={<Book size={24} />} label="Docs" color="var(--secondary-color)" onClick={toggleMenu} />
-                    <NavCard to="/examples" icon={<Box size={24} />} label="Examples" color="#a855f7" onClick={toggleMenu} />
-                    <NavCard to="/bite" icon={<Zap size={24} />} label="Bite" color="#22c55e" onClick={toggleMenu} />
+                    <NavCard href="/" icon={<Home size={24} />} label="Home" color="var(--primary-color)" onClick={toggleMenu} />
+                    <NavCard href="/docs" icon={<Book size={24} />} label="Docs" color="var(--secondary-color)" onClick={toggleMenu} />
+                    <NavCard href="/examples" icon={<Box size={24} />} label="Examples" color="#a855f7" onClick={toggleMenu} />
+                    <NavCard href="/bite" icon={<Zap size={24} />} label="Bite" color="#22c55e" onClick={toggleMenu} />
                     <a
                         href="https://github.com/Ghua8088/pytron"
                         target="_blank"
@@ -106,10 +107,10 @@ export default function GlobalMobileNav() {
     );
 }
 
-function NavCard({ to, icon, label, color, onClick }) {
+function NavCard({ href, icon, label, color, onClick }) {
     return (
         <Link
-            to={to}
+            href={href}
             onClick={onClick}
             style={{
                 display: 'flex',

@@ -1,4 +1,6 @@
-import { Routes, Route, Navigate, useLocation, Link } from 'react-router-dom';
+"use client";
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { PanelLeftOpen, ChevronRight, Home as HomeIcon } from 'lucide-react';
 import { motion, useScroll, useSpring } from 'framer-motion';
@@ -35,9 +37,9 @@ const breadcrumbMap = {
   '/docs/comparison': 'Comparison',
 };
 
-export default function Docs() {
+export default function Docs({ children }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const { pathname } = useLocation();
+  const { pathname } = { pathname: usePathname() };
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stagger: 100,
@@ -120,27 +122,14 @@ export default function Docs() {
             fontSize: '0.85rem',
             color: 'var(--text-secondary)'
           }}>
-            <Link to="/" style={{ display: 'flex', alignItems: 'center', color: 'inherit' }}><HomeIcon size={14} /></Link>
+            <Link href="/" style={{ display: 'flex', alignItems: 'center', color: 'inherit' }}><HomeIcon size={14} /></Link>
             <ChevronRight size={14} />
-            <Link to="/docs" style={{ color: 'inherit' }}>Docs</Link>
+            <Link href="/docs" style={{ color: 'inherit' }}>Docs</Link>
             <ChevronRight size={14} />
             <span style={{ color: 'var(--primary-color)', fontWeight: 500 }}>{breadcrumb}</span>
           </nav>
 
-          <Routes>
-            <Route path="/" element={<Introduction />} />
-            <Route path="/architecture" element={<Architecture />} />
-            <Route path="/features" element={<Features />} />
-            <Route path="/security" element={<Security />} />
-            <Route path="/vap" element={<VAP />} />
-            <Route path="/cli" element={<CLI />} />
-            <Route path="/menus" element={<Menus />} />
-            <Route path="/binary-evolution" element={<BinaryEvolution />} />
-            <Route path="/dependency-management" element={<DependencyManagement />} />
-            <Route path="/ecosystem" element={<Ecosystem />} />
-            <Route path="/comparison" element={<Comparison />} />
-            <Route path="*" element={<Navigate to="/docs" replace />} />
-          </Routes>
+          {children}
           <DocNavigation />
           <Footer />
         </main>

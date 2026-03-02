@@ -1,3 +1,4 @@
+"use client";
 import SEO from '../../components/SEO';
 import CodeBlock from '../../components/CodeBlock';
 import Callout from '../../components/Callout';

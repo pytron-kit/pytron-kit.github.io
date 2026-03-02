@@ -1,3 +1,4 @@
+"use client";
 import Mermaid from '../../components/Mermaid';
 import SEO from '../../components/SEO';
 import CodeBlock from '../../components/CodeBlock';

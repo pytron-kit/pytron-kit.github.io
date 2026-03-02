@@ -1,6 +1,7 @@
+"use client";
+import { useRouter } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { useNavigate } from 'react-router-dom';
 import Fuse from 'fuse.js';
 import { Search as SearchIcon, X, ArrowRight } from 'lucide-react';
 
@@ -28,7 +29,7 @@ export default function Search() {
   const [results, setResults] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const searchRef = useRef(null);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   useEffect(() => {
     if (query.length > 1) {
@@ -68,14 +69,14 @@ export default function Search() {
   }, [isOpen]);
 
   const handleSelect = (path) => {
-    navigate(path);
+    router.push(path);
     setIsOpen(false);
     setQuery('');
   };
 
   return (
     <div className="search-container" ref={searchRef} style={{ position: 'relative' }}>
-      <button 
+      <button
         onClick={() => setIsOpen(!isOpen)}
         style={{
           background: 'rgba(255, 255, 255, 0.03)',
@@ -99,18 +100,18 @@ export default function Search() {
           <span className="search-placeholder">Search...</span>
         </div>
         <div className="search-shortcuts" style={{ display: 'flex', gap: '2px', opacity: 0.6 }}>
-          <kbd style={{ 
-            fontSize: '0.7rem', 
-            background: 'rgba(255,255,255,0.05)', 
-            padding: '1px 4px', 
+          <kbd style={{
+            fontSize: '0.7rem',
+            background: 'rgba(255,255,255,0.05)',
+            padding: '1px 4px',
             borderRadius: '4px',
             border: '1px solid var(--border-color)',
             fontFamily: 'sans-serif'
           }}>⌘</kbd>
-          <kbd style={{ 
-            fontSize: '0.7rem', 
-            background: 'rgba(255,255,255,0.05)', 
-            padding: '1px 5px', 
+          <kbd style={{
+            fontSize: '0.7rem',
+            background: 'rgba(255,255,255,0.05)',
+            padding: '1px 5px',
             borderRadius: '4px',
             border: '1px solid var(--border-color)',
             fontFamily: 'sans-serif'
@@ -121,7 +122,7 @@ export default function Search() {
       {isOpen && createPortal(
         <>
           {/* Overlay for mobile/desktop focus */}
-          <div 
+          <div
             onClick={() => setIsOpen(false)}
             style={{
               position: 'fixed',
@@ -131,9 +132,9 @@ export default function Search() {
               zIndex: 1999
             }}
           />
-          
-          <div 
-            className="search-modal" 
+
+          <div
+            className="search-modal"
             onMouseDown={(e) => e.stopPropagation()}
             style={{
               position: 'fixed',
@@ -153,7 +154,7 @@ export default function Search() {
           >
             <div style={{ padding: '0.75rem 1rem', borderBottom: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
               <SearchIcon size={16} color="var(--primary-color)" />
-              <input 
+              <input
                 autoFocus
                 type="text"
                 placeholder="Search documentation..."
@@ -173,83 +174,83 @@ export default function Search() {
               </button>
             </div>
 
-          <div className="search-results" style={{ maxHeight: '450px', overflowY: 'auto', padding: '0.5rem' }}>
-            {results.length > 0 ? (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                <div style={{ padding: '0.5rem 0.75rem', fontSize: '0.7rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Documentation Results</div>
-                {results.map((item, index) => (
-                  <div 
-                    key={index}
-                    onClick={() => handleSelect(item.path)}
-                    style={{
-                      padding: '0.75rem 1rem',
-                      cursor: 'pointer',
-                      borderRadius: '8px',
-                      transition: 'all 0.2s',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      background: 'transparent'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background = 'rgba(255,255,255,0.05)';
-                      e.currentTarget.style.transform = 'translateX(4px)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = 'transparent';
-                      e.currentTarget.style.transform = 'translateX(0)';
-                    }}
-                  >
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                      <div style={{ fontWeight: 600, color: 'var(--text-primary)', fontSize: '0.9rem' }}>{item.title}</div>
-                      <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{item.description}</div>
-                    </div>
-                    <ArrowRight size={14} color="var(--primary-color)" />
-                  </div>
-                ))}
-              </div>
-            ) : query.length > 1 ? (
-              <div style={{ padding: '3rem 2rem', textAlign: 'center' }}>
-                <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>No documentation found for <span style={{ color: 'white' }}>"{query}"</span></div>
-              </div>
-            ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', padding: '1rem' }}>
-                <div>
-                  <div style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.75rem' }}>Popular Guides</div>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
-                    {[
-                      { title: 'Quick Start', path: '/docs' },
-                      { title: 'Architecture', path: '/docs/architecture' },
-                      { title: 'Security', path: '/docs/security' },
-                      { title: 'CLI', path: '/docs/cli' }
-                    ].map(link => (
-                      <div 
-                        key={link.path}
-                        onClick={() => handleSelect(link.path)}
-                        style={{ padding: '0.6rem 0.75rem', background: 'rgba(255,255,255,0.03)', borderRadius: '6px', fontSize: '0.85rem', cursor: 'pointer', border: '1px solid var(--border-color)' }}
-                        onMouseEnter={(e) => e.currentTarget.style.borderColor = 'var(--primary-color)'}
-                        onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--border-color)'}
-                      >
-                        {link.title}
+            <div className="search-results" style={{ maxHeight: '450px', overflowY: 'auto', padding: '0.5rem' }}>
+              {results.length > 0 ? (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                  <div style={{ padding: '0.5rem 0.75rem', fontSize: '0.7rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Documentation Results</div>
+                  {results.map((item, index) => (
+                    <div
+                      key={index}
+                      onClick={() => handleSelect(item.path)}
+                      style={{
+                        padding: '0.75rem 1rem',
+                        cursor: 'pointer',
+                        borderRadius: '8px',
+                        transition: 'all 0.2s',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        background: 'transparent'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = 'rgba(255,255,255,0.05)';
+                        e.currentTarget.style.transform = 'translateX(4px)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = 'transparent';
+                        e.currentTarget.style.transform = 'translateX(0)';
+                      }}
+                    >
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                        <div style={{ fontWeight: 600, color: 'var(--text-primary)', fontSize: '0.9rem' }}>{item.title}</div>
+                        <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{item.description}</div>
                       </div>
-                    ))}
+                      <ArrowRight size={14} color="var(--primary-color)" />
+                    </div>
+                  ))}
+                </div>
+              ) : query.length > 1 ? (
+                <div style={{ padding: '3rem 2rem', textAlign: 'center' }}>
+                  <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>No documentation found for <span style={{ color: 'white' }}>"{query}"</span></div>
+                </div>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', padding: '1rem' }}>
+                  <div>
+                    <div style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.75rem' }}>Popular Guides</div>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                      {[
+                        { title: 'Quick Start', path: '/docs' },
+                        { title: 'Architecture', path: '/docs/architecture' },
+                        { title: 'Security', path: '/docs/security' },
+                        { title: 'CLI', path: '/docs/cli' }
+                      ].map(link => (
+                        <div
+                          key={link.path}
+                          onClick={() => handleSelect(link.path)}
+                          style={{ padding: '0.6rem 0.75rem', background: 'rgba(255,255,255,0.03)', borderRadius: '6px', fontSize: '0.85rem', cursor: 'pointer', border: '1px solid var(--border-color)' }}
+                          onMouseEnter={(e) => e.currentTarget.style.borderColor = 'var(--primary-color)'}
+                          onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--border-color)'}
+                        >
+                          {link.title}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', gap: '1rem' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.7rem', color: 'var(--text-muted)' }}>
+                        <kbd style={{ background: 'rgba(255,255,255,0.1)', padding: '1px 4px', borderRadius: '3px', border: '1px solid var(--border-color)' }}>↵</kbd> Select
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.7rem', color: 'var(--text-muted)' }}>
+                        <kbd style={{ background: 'rgba(255,255,255,0.1)', padding: '1px 4px', borderRadius: '3px', border: '1px solid var(--border-color)' }}>esc</kbd> Close
+                      </div>
+                    </div>
                   </div>
                 </div>
-                
-                <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div style={{ display: 'flex', gap: '1rem' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.7rem', color: 'var(--text-muted)' }}>
-                      <kbd style={{ background: 'rgba(255,255,255,0.1)', padding: '1px 4px', borderRadius: '3px', border: '1px solid var(--border-color)' }}>↵</kbd> Select
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.7rem', color: 'var(--text-muted)' }}>
-                      <kbd style={{ background: 'rgba(255,255,255,0.1)', padding: '1px 4px', borderRadius: '3px', border: '1px solid var(--border-color)' }}>esc</kbd> Close
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
-        </div>
         </>,
         document.getElementById('portal-root')
       )}

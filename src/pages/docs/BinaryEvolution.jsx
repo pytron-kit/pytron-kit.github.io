@@ -1,3 +1,4 @@
+"use client";
 export default function BinaryEvolution() {
     return (
         <div className="prose">

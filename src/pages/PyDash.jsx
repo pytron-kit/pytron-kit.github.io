@@ -1,20 +1,31 @@
+"use client";
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Activity, Cpu, Database, Layout, Github, BarChart3, XCircle } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
-import Callout from '../components/Callout';
-import CodeBlock from '../components/CodeBlock';
 
 export default function PyDashPage() {
     return (
-        <div className="main-content">
-            <SEO
-                title="PyDash | Pytron-kit Showcase"
-                description="PyDash is a modern system monitor and task manager built with Pytron-kit using Python and modern web technologies."
-            />
+        <div className="main-content" style={{ backgroundColor: '#111111' }}>
+            <SEO title="PyDash | Pytron-kit Showcase" />
+            
+            {/* Tech/Dash Background */}
+            <div style={{
+                position: 'fixed',
+                inset: 0,
+                backgroundImage: 'radial-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px)',
+                backgroundSize: '30px 30px',
+                zIndex: -1,
+                pointerEvents: 'none',
+            }} />
+            <div style={{
+                position: 'absolute',
+                top: 0, left: 0, right: 0, height: '600px',
+                background: 'linear-gradient(180deg, rgba(37, 99, 235, 0.05) 0%, transparent 100%)',
+                zIndex: -1
+            }} />
 
-            {/* Hero Section */}
-            <section className="hero-section" style={{ minHeight: 'auto', padding: '6rem 2rem' }}>
+            <section className="hero-section" style={{ minHeight: 'auto', padding: '8rem 2rem 6rem', background: 'transparent' }}>
                 <div className="container">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -23,131 +34,108 @@ export default function PyDashPage() {
                         style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
                     >
                         <div style={{
-                            background: 'rgba(6, 182, 212, 0.1)',
-                            border: '1px solid rgba(6, 182, 212, 0.2)',
+                            background: 'rgba(55, 65, 81, 0.5)',
+                            border: '1px solid rgba(75, 85, 99, 1)',
                             padding: '0.4rem 1rem',
-                            borderRadius: '2rem',
-                            fontSize: '0.8rem',
-                            color: 'var(--primary-color)',
+                            borderRadius: '4px',
+                            fontSize: '0.75rem',
+                            color: '#9ca3af',
                             marginBottom: '2rem',
                             fontWeight: 700,
-                            letterSpacing: '0.05em'
+                            letterSpacing: '0.1em',
+                            display: 'flex', alignItems: 'center', gap: '0.5rem',
+                            boxShadow: '0 4px 6px rgba(0,0,0,0.3)'
                         }}>
-                            CASE STUDY: SYSTEM UTILITIES
+                            <Activity size={14} color="#3b82f6" /> LIVE SYSTEM METRICS
                         </div>
 
-                        <h1 className="font-lobster" style={{ fontSize: 'clamp(3rem, 8vw, 5rem)', marginBottom: '1.5rem', color: 'var(--primary-color)' }}>
+                        <h1 style={{ 
+                            fontSize: 'clamp(3rem, 8vw, 5.5rem)', 
+                            marginBottom: '1rem', 
+                            color: '#f3f4f6',
+                            fontFamily: '"Inter", sans-serif',
+                            fontWeight: 800,
+                            letterSpacing: '-0.03em',
+                        }}>
                             PyDash
                         </h1>
 
                         <p style={{
                             fontSize: '1.25rem',
-                            maxWidth: '750px',
-                            color: 'var(--text-secondary)',
+                            maxWidth: '780px',
+                            color: '#9ca3af',
                             margin: '0 auto 3rem',
-                            lineHeight: 1.6
+                            lineHeight: 1.6,
+                            textAlign: 'center'
                         }}>
-                            A modern system monitor and task manager. <br />
-                            Leveraging Python's system access with a high-performance reactive interface.
+                            A beautiful cross-platform system monitor. <br />
+                            Watch your CPU <span style={{color: '#3b82f6'}}>#</span>, Memory <span style={{color: '#10b981'}}>#</span>, and Disk <span style={{color: '#eab308'}}>#</span> in absolutely real-time.
                         </p>
 
                         <div style={{
                             width: '100%',
                             maxWidth: '1000px',
-                            background: 'var(--surface-color)',
-                            borderRadius: '1.5rem',
-                            border: '1px solid var(--border-color)',
-                            padding: '1rem',
+                            background: '#1a1a1a',
+                            borderRadius: '8px',
+                            border: '1px solid #333',
+                            padding: '0.5rem',
                             marginBottom: '4rem',
-                            boxShadow: '0 40px 100px -20px rgba(0,0,0,0.5)',
-                            backdropFilter: 'blur(20px)'
+                            boxShadow: '0 25px 50px -12px rgba(0,0,0,0.8), 0 0 30px rgba(59, 130, 246, 0.15)',
                         }}>
                             <img
-                                src={`${import.meta.env.BASE_URL}examples/pydash/screenshot.png`}
+                                src={`/examples/pydash/screenshot.png`}
                                 alt="PyDash Screenshot"
-                                style={{ width: '100%', borderRadius: '1rem', display: 'block' }}
+                                style={{ width: '100%', borderRadius: '4px', display: 'block' }}
                             />
                         </div>
 
-                        <div style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap', justifyContent: 'center' }}>
-                            <a href="https://github.com/Ghua8088/pyDash" target="_blank" className="btn btn-primary" style={{ padding: '0.8rem 2.5rem' }}>
+                        <div style={{ display: 'flex', gap: '1.25rem' }}>
+                            <a href="https://github.com/Ghua8088/pyDash" target="_blank" style={{
+                                padding: '1rem 2.5rem',
+                                border: '1px solid rgba(59, 130, 246, 0.5)',
+                                color: '#bfdbfe',
+                                fontWeight: 700,
+                                borderRadius: '4px',
+                                textDecoration: 'none',
+                                display: 'flex', alignItems: 'center', gap: '0.5rem',
+                                transition: 'all 0.2s',
+                                background: 'rgba(37, 99, 235, 0.15)'
+                            }}
+                            onMouseOver={e => { e.currentTarget.style.background = 'rgba(37, 99, 235, 0.3)'; }}
+                            onMouseOut={e => { e.currentTarget.style.background = 'rgba(37, 99, 235, 0.15)'; }}
+                            >
                                 <Github size={18} /> View Repository
                             </a>
-                            <Link to="/docs" className="btn btn-secondary" style={{ padding: '0.8rem 2.5rem' }}>
-                                Documentation
-                            </Link>
                         </div>
                     </motion.div>
                 </div>
             </section>
 
-            {/* Content Section */}
             <section className="container" style={{ paddingBottom: '8rem' }}>
-                <div style={{ maxWidth: '840px', margin: '0 auto' }}>
-                    <div className="prose">
-                        <h2 id="overview">Overview</h2>
-                        <p>
-                            PyDash is designed to provide real-time system insights with a minimal footprint. It serves as an excellent example of how to use <strong>Pytron-kit's state synchronization</strong> to stream high-frequency data from Python to a web-based frontend.
-                        </p>
-
-                        <Callout title="Learning Resource" type="info">
-                            This project is highly recommended for developers looking to understand bidirectional state sync and handling frameless windows in Pytron-kit.
-                        </Callout>
-
-                        <h2 id="features">Features</h2>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem', marginTop: '2rem', marginBottom: '4rem' }}>
-                            <FeatureCard icon={<Activity size={20} />} title="Real-time Stats" desc="Live monitoring of CPU, Memory, and Disk usage." />
-                            <FeatureCard icon={<BarChart3 size={20} />} title="Live Graphs" desc="Dynamic visual representation of system performance." />
-                            <FeatureCard icon={<Layout size={20} />} title="Custom UI" desc="Frameless window design with a custom matte-black title bar." />
-                            <FeatureCard icon={<XCircle size={20} />} title="Process Manager" desc="View and terminate system processes directly from the UI." />
-                        </div>
-
-                        <h2 id="setup">Setup & Installation</h2>
-                        <p>Follow these steps to set up PyDash on your local machine:</p>
-                        
-                        <h3 style={{ fontSize: '1rem', marginTop: '2rem' }}>1. Environment Setup</h3>
-                        <CodeBlock language="bash" code={`pip install -r requirements.txt`} />
-                        
-                        <h3 style={{ fontSize: '1rem', marginTop: '2rem' }}>2. Frontend Installation</h3>
-                        <CodeBlock language="bash" code={`cd frontend
-npm install`} />
-
-                        <h2 id="running">Running the Application</h2>
-                        <p>You can build the production frontend or run in development mode:</p>
-                        
-                        <h3 style={{ fontSize: '1rem', marginTop: '2rem' }}>Build and Run</h3>
-                        <CodeBlock language="bash" code={`pytron build-frontend
-pytron run`} />
-
-                        <h3 style={{ fontSize: '1rem', marginTop: '2rem' }}>Hot-Reloading (Dev)</h3>
-                        <CodeBlock language="bash" code={`pytron run --dev`} />
-                    </div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }}>
+                    <DashCard icon={<Cpu color="#3b82f6"/>} title="CPU Processing" desc="Per-core hardware monitoring mapped directly from Python." />
+                    <DashCard icon={<Database color="#10b981"/>} title="RAM/VRAM Usage" desc="Track memory footprints and system loads." />
+                    <DashCard icon={<Layout color="#eab308"/>} title="Disk I/O Analytics" desc="Watch read/write speeds as they happen." />
                 </div>
             </section>
-
-            <footer style={{ padding: '4rem 2rem', textAlign: 'center', borderTop: '1px solid var(--border-color)' }}>
-                <Link to="/examples" style={{ color: 'var(--primary-color)', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-                    <Layout size={18} /> Back to Showcase
-                </Link>
-            </footer>
         </div>
     );
 }
 
-function FeatureCard({ icon, title, desc }) {
+function DashCard({ icon, title, desc }) {
     return (
         <div style={{
-            background: 'var(--surface-color)',
-            border: '1px solid var(--border-color)',
-            padding: '1.5rem',
-            borderRadius: '1rem',
+            background: '#1a1a1a',
+            border: '1px solid #333',
+            padding: '2rem',
+            borderRadius: '8px',
             display: 'flex',
             flexDirection: 'column',
-            gap: '0.75rem'
+            gap: '1rem',
         }}>
-            <div style={{ color: 'var(--primary-color)' }}>{icon}</div>
-            <h4 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 700 }}>{title}</h4>
-            <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>{desc}</p>
+            <div>{icon}</div>
+            <h4 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 600, color: '#f3f4f6' }}>{title}</h4>
+            <p style={{ margin: 0, fontSize: '0.9rem', color: '#9ca3af', lineHeight: 1.5 }}>{desc}</p>
         </div>
     )
 }

@@ -1,6 +1,6 @@
+"use client";
+import Link from 'next/link';
 import React from 'react';
-import { Link } from 'react-router-dom';
-
 const NotFound = () => {
     return (
         <div style={{
@@ -58,10 +58,10 @@ const NotFound = () => {
             </p>
 
             <div style={{ display: 'flex', gap: '1rem' }}>
-                <Link to="/" className="btn btn-primary" style={{ padding: '1rem 2.5rem', fontSize: '1.1rem' }}>
+                <Link href="/" className="btn btn-primary" style={{ padding: '1rem 2.5rem', fontSize: '1.1rem' }}>
                     Reboot to Home
                 </Link>
-                <Link to="/docs" className="btn btn-secondary" style={{ padding: '1rem 2.5rem', fontSize: '1.1rem' }}>
+                <Link href="/docs" className="btn btn-secondary" style={{ padding: '1rem 2.5rem', fontSize: '1.1rem' }}>
                     Check Valid Logs
                 </Link>
             </div>

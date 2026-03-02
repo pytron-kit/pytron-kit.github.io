@@ -1,30 +1,39 @@
-import { useEffect, useRef } from 'react';
+"use client";
+import { useEffect, useRef, useState } from 'react';
 import mermaid from 'mermaid';
-
-mermaid.initialize({
-    startOnLoad: true,
-    theme: 'dark',
-    securityLevel: 'loose',
-    fontFamily: 'Inter, sans-serif',
-    themeVariables: {
-        primaryColor: '#06b6d4',
-        primaryTextColor: '#fff',
-        primaryBorderColor: '#06b6d4',
-        lineColor: '#06b6d4',
-        secondaryColor: '#a855f7',
-        tertiaryColor: '#22c55e',
-    }
-});
 
 export default function Mermaid({ chart }) {
     const ref = useRef(null);
+    const [initialized, setInitialized] = useState(false);
 
     useEffect(() => {
-        if (ref.current && chart) {
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            securityLevel: 'loose',
+            fontFamily: 'Inter, sans-serif',
+            themeVariables: {
+                primaryColor: '#06b6d4',
+                primaryTextColor: '#fff',
+                primaryBorderColor: '#06b6d4',
+                lineColor: '#06b6d4',
+                secondaryColor: '#a855f7',
+                tertiaryColor: '#22c55e',
+            }
+        });
+        setInitialized(true);
+    }, []);
+
+    useEffect(() => {
+        if (initialized && ref.current && chart) {
             ref.current.removeAttribute('data-processed');
-            mermaid.contentLoaded();
+            try {
+                mermaid.contentLoaded();
+            } catch (e) {
+                console.error("Mermaid error:", e);
+            }
         }
-    }, [chart]);
+    }, [chart, initialized]);
 
     return (
         <div

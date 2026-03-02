@@ -1,5 +1,6 @@
+"use client";
+import Link from 'next/link';
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Github, Mail, Globe, Linkedin } from 'lucide-react';
 
 export default function Footer() {
@@ -8,7 +9,7 @@ export default function Footer() {
       <div className="container">
         <div className="footer-content">
           <div className="footer-brand-section">
-            <Link to="/" className="footer-logo font-lobster">Pytron-kit</Link>
+            <Link href="/" className="footer-logo font-lobster">Pytron-kit</Link>
             <p className="footer-description">
               A toolkit for building desktop applications with Python and Modern Web Frameworks.
             </p>
@@ -17,8 +18,8 @@ export default function Footer() {
           <div className="footer-links-grid">
             <div className="footer-link-group">
               <h4>Resources</h4>
-              <Link to="/docs">Documentation</Link>
-              <Link to="/examples">Examples</Link>
+              <Link href="/docs">Documentation</Link>
+              <Link href="/examples">Examples</Link>
               <a href="https://github.com/Ghua8088/pytron" target="_blank" rel="noopener noreferrer">GitHub</a>
             </div>
             

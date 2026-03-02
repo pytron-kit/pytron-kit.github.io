@@ -1,3 +1,4 @@
+"use client";
 import CodeBlock from '../../components/CodeBlock';
 
 export default function VAP() {

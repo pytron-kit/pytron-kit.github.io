@@ -1,3 +1,5 @@
+"use client";
+import Link from 'next/link';
 import CodeBlock from '../../components/CodeBlock';
 import Callout from '../../components/Callout';
 

@@ -1,4 +1,6 @@
-import { NavLink } from 'react-router-dom';
+"use client";
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { X, BookOpen, Cpu, Shield, Zap, Terminal, Box, Layers, Repeat, GitCompare, Package } from 'lucide-react';
 
 const sections = [
@@ -31,17 +33,19 @@ const sections = [
 ];
 
 export default function Sidebar({ isOpen, onClose }) {
+  const pathname = usePathname() || '';
+
   return (
     <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h3 style={{ 
-            fontSize: '0.7rem', 
-            fontWeight: 700, 
-            textTransform: 'uppercase', 
-            letterSpacing: '0.12em', 
-            color: 'var(--text-muted)', 
-            margin: 0 
+          <h3 style={{
+            fontSize: '0.7rem',
+            fontWeight: 700,
+            textTransform: 'uppercase',
+            letterSpacing: '0.12em',
+            color: 'var(--text-muted)',
+            margin: 0
           }}>
             Documentation
           </h3>
@@ -62,10 +66,10 @@ export default function Sidebar({ isOpen, onClose }) {
 
         {sections.map((section, idx) => (
           <div key={idx}>
-            <h4 style={{ 
-              fontSize: '0.75rem', 
-              fontWeight: 600, 
-              color: 'var(--text-primary)', 
+            <h4 style={{
+              fontSize: '0.75rem',
+              fontWeight: 600,
+              color: 'var(--text-primary)',
               marginBottom: '1rem',
               paddingLeft: '0.5rem',
               letterSpacing: '-0.01em'
@@ -73,34 +77,32 @@ export default function Sidebar({ isOpen, onClose }) {
               {section.title}
             </h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-              {section.links.map(link => (
-                <NavLink
-                  key={link.path}
-                  to={link.path}
-                  onClick={onClose}
-                  end={link.path === '/docs'}
-                  style={({ isActive }) => ({
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.75rem',
-                    padding: '0.5rem 0.75rem',
-                    borderRadius: '8px',
-                    color: isActive ? 'var(--primary-color)' : 'var(--text-secondary)',
-                    fontSize: '0.9rem',
-                    fontWeight: isActive ? 500 : 400,
-                    transition: 'all 0.2s ease',
-                    border: '1px solid transparent'
-                  })}
-                  className={({ isActive }) => isActive ? 'sidebar-link active' : 'sidebar-link'}
-                >
-                  {({ isActive }) => (
-                    <>
-                      <link.icon size={15} strokeWidth={isActive ? 2 : 1.5} />
-                      {link.title}
-                    </>
-                  )}
-                </NavLink>
-              ))}
+              {section.links.map(link => {
+                const isActive = pathname === link.path;
+                return (
+                  <Link
+                    key={link.path}
+                    href={link.path}
+                    onClick={onClose}
+                    className={isActive ? 'sidebar-link active' : 'sidebar-link'}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.75rem',
+                      padding: '0.5rem 0.75rem',
+                      borderRadius: '8px',
+                      color: isActive ? 'var(--primary-color)' : 'var(--text-secondary)',
+                      fontSize: '0.9rem',
+                      fontWeight: isActive ? 500 : 400,
+                      transition: 'all 0.2s ease',
+                      border: '1px solid transparent'
+                    }}
+                  >
+                    <link.icon size={15} strokeWidth={isActive ? 2 : 1.5} />
+                    {link.title}
+                  </Link>
+                );
+              })}
             </div>
           </div>
         ))}
@@ -108,4 +110,3 @@ export default function Sidebar({ isOpen, onClose }) {
     </aside>
   );
 }
-

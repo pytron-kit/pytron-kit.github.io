@@ -1,5 +1,6 @@
+"use client";
+import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
 import { ArrowRight, Zap, Box, Layers, Terminal, Package, Copy, Check, BarChart, Activity, Cpu, Plane, Globe, Shield } from 'lucide-react';
 
 import { useState } from 'react';
@@ -34,7 +35,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className="hero-section" style={{ textAlign: 'center' }}>
         <div className="hero-ambient-glow" />
-        
+
         <div className="container">
           <motion.div
             initial="hidden"
@@ -42,23 +43,7 @@ export default function Home() {
             variants={containerVariants}
             style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}
           >
-            <motion.div variants={itemVariants}>
-              <span style={{
-                color: 'var(--primary-color)',
-                textTransform: 'uppercase',
-                letterSpacing: '0.1rem',
-                fontSize: '0.75rem',
-                fontWeight: 800,
-                marginBottom: '1rem',
-                display: 'block',
-                background: 'rgba(6, 182, 212, 0.1)',
-                padding: '0.4rem 1rem',
-                borderRadius: '2rem',
-                border: '1px solid rgba(6, 182, 212, 0.2)'
-              }}>
-                Desktop Application Framework for Python
-              </span>
-            </motion.div>
+
 
             <motion.h1 variants={itemVariants} style={{ fontSize: 'clamp(2.5rem, 8vw, 4.5rem)', marginBottom: '1.5rem', lineHeight: 1.05, fontWeight: 900 }}>
               Build <span className="font-lobster" style={{ color: 'var(--primary-color)', WebkitTextFillColor: 'initial', background: 'none' }}>Native Apps</span><br />
@@ -66,7 +51,7 @@ export default function Home() {
             </motion.h1>
 
             <motion.p variants={itemVariants} style={{ fontSize: '1.1rem', maxWidth: '650px', margin: '0 auto 3rem', color: '#94a3b8', lineHeight: 1.6 }}>
-              A toolkit for building desktop applications using Python logic and modern web interfaces. 
+              A toolkit for building desktop applications using Python logic and modern web interfaces.
               Produces small, standalone binaries using system-native webviews.
             </motion.p>
 
@@ -75,7 +60,7 @@ export default function Home() {
             </motion.div>
 
             <motion.div variants={itemVariants} style={{ display: 'flex', gap: '1.25rem', justifyContent: 'center', flexWrap: 'wrap', width: '100%' }}>
-              <Link to="/docs" className="btn btn-primary" style={{ fontSize: '0.95rem', padding: '0.8rem 2.5rem', minWidth: '200px', borderRadius: '8px', textTransform: 'none' }}>
+              <Link href="/docs" className="btn btn-primary" style={{ fontSize: '0.95rem', padding: '0.8rem 2.5rem', minWidth: '200px', borderRadius: '8px', textTransform: 'none' }}>
                 Documentation
               </Link>
               <a href="https://github.com/Ghua8088/pytron" target="_blank" className="btn btn-secondary" style={{ fontSize: '0.95rem', padding: '0.8rem 2.5rem', minWidth: '200px', borderRadius: '8px', textTransform: 'none' }}>
@@ -299,7 +284,7 @@ export default function Home() {
             Create lightweight and secure desktop applications with Python and React.
           </p>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link to="/docs" className="btn btn-primary" style={{ padding: '0.8rem 3rem', textTransform: 'none' }}>
+            <Link href="/docs" className="btn btn-primary" style={{ padding: '0.8rem 3rem', textTransform: 'none' }}>
               Documentation
             </Link>
             <a href="https://github.com/Ghua8088/pytron" target="_blank" className="btn btn-secondary" style={{ padding: '0.8rem 3rem', textTransform: 'none' }}>
@@ -401,9 +386,9 @@ function PluginCard({ title, version, icon, description, features, gradient, glo
       }}
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-        <div style={{ 
-          background: 'rgba(255,255,255,0.03)', 
-          padding: '0.75rem', 
+        <div style={{
+          background: 'rgba(255,255,255,0.03)',
+          padding: '0.75rem',
           borderRadius: '12px',
           border: '1px solid var(--border-color)',
           display: 'flex',

@@ -1,4 +1,6 @@
-import { Link, useLocation } from 'react-router-dom';
+"use client";
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const links = [
@@ -16,7 +18,7 @@ const links = [
 ];
 
 export default function DocNavigation() {
-    const location = useLocation();
+    const location = { pathname: usePathname() };
     const currentPath = location.pathname;
 
     const currentIndex = links.findIndex(link => link.path === currentPath);
@@ -37,7 +39,7 @@ export default function DocNavigation() {
             flexWrap: 'wrap'
         }}>
             {prev ? (
-                <Link to={prev.path} className="nav-card-prev" style={{
+                <Link href={prev.path} className="nav-card-prev" style={{
                     flex: '1',
                     minWidth: '200px',
                     padding: '1.5rem',
@@ -59,7 +61,7 @@ export default function DocNavigation() {
             ) : <div style={{ flex: '1' }} />}
 
             {next ? (
-                <Link to={next.path} className="nav-card-next" style={{
+                <Link href={next.path} className="nav-card-next" style={{
                     flex: '1',
                     minWidth: '200px',
                     padding: '1.5rem',

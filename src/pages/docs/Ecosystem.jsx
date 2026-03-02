@@ -1,3 +1,5 @@
+"use client";
+import Link from 'next/link';
 import SEO from '../../components/SEO';
 import CodeBlock from '../../components/CodeBlock';
 import { ExternalLink } from 'lucide-react';

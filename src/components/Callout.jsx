@@ -1,3 +1,4 @@
+"use client";
 import { Info, AlertTriangle, CheckCircle, AlertCircle } from 'lucide-react';
 
 const types = {
