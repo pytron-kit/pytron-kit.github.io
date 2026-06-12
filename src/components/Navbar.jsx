@@ -21,13 +21,13 @@ export default function Navbar() {
       <div className="container" style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
         <Link href="/" className="logo" style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'white', fontWeight: 700, fontSize: '1.25rem', letterSpacing: '0.02em' }}>
           <img
-            src="/pytron.png"
+            src="/pytron-banner.png"
             alt="Pytron-kit"
-            style={{ height: '32px', width: '32px' }}
+            style={{ height: '32px', width: 'auto' }}
             decoding="async"
             loading="eager"
           />
-          <span className="font-lobster" style={{ color: 'var(--primary-color)', textShadow: '0 0 20px rgba(6, 182, 212, 0.3)' }}>Pytron-kit</span>
+
         </Link>
 
         <div className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: '1rem', flex: 1, justifyContent: 'flex-end' }}>

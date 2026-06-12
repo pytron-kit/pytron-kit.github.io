@@ -1,7 +1,7 @@
 "use client";
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { X, BookOpen, Cpu, Shield, Zap, Terminal, Box, Layers, Repeat, GitCompare, Package } from 'lucide-react';
+import { X, BookOpen, Cpu, Shield, Zap, Terminal, Box, Layers, Repeat, GitCompare, Package, Code } from 'lucide-react';
 
 const sections = [
   {
@@ -17,6 +17,7 @@ const sections = [
       { title: 'Core Features', path: '/docs/features', icon: Zap },
       { title: 'Virtual IPC (VAP)', path: '/docs/vap', icon: Repeat },
       { title: 'CLI & Tools', path: '/docs/cli', icon: Terminal },
+      { title: 'API Reference', path: '/docs/api-reference', icon: Code },
     ]
   },
   {

@@ -1,7 +1,7 @@
 "use client";
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { ArrowRight, Zap, Box, Layers, Terminal, Package, Copy, Check, BarChart, Activity, Cpu, Plane, Globe, Shield } from 'lucide-react';
+import { ArrowRight, Zap, Box, Layers, Terminal, Package, Copy, Check, BarChart, Activity, Cpu, Plane, Globe, Shield, Github } from 'lucide-react';
 
 import { useState } from 'react';
 import SEO from '../components/SEO';
@@ -27,193 +27,192 @@ export default function Home() {
   };
 
   return (
-    <div className="main-content">
-      <SEO
-        title="Pytron-kit : Modern Python Desktop Apps"
-        description="The lightweight framework that bridges Python logic with modern web UIs. Zero friction, native performance."
-      />
-      {/* Hero Section */}
-      <section className="hero-section" style={{ textAlign: 'center' }}>
-        <div className="hero-ambient-glow" />
+    <>
+      <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0, overflow: 'hidden' }}>
+      {/* Optional: Adds a subtle vignette to make the neon glow pop more against a dark theme */}
+      <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.4) 100%)' }} />
+      
+      <svg width="100%" height="100%" style={{ opacity: 0.6 }}>
+        <defs>
+          {/* 1. Glow Filter for that tech/cyber vibe */}
+          <filter id="neon-glow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="6" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="blur" /> {/* Double up for extra intensity */}
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
 
-        <div className="container">
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={containerVariants}
-            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}
-          >
+          {/* 2. Gradients so the paths fade out at the edges of the screen */}
+          <linearGradient id="primary-fade" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="transparent" />
+            <stop offset="50%" stopColor="var(--primary-color, #3b82f6)" />
+            <stop offset="100%" stopColor="transparent" />
+          </linearGradient>
 
+          <linearGradient id="secondary-fade" x1="100%" y1="0%" x2="0%" y2="0%">
+            <stop offset="0%" stopColor="transparent" />
+            <stop offset="50%" stopColor="var(--secondary-color, #f97316)" />
+            <stop offset="100%" stopColor="transparent" />
+          </linearGradient>
+        </defs>
 
-            <motion.h1 variants={itemVariants} style={{ fontSize: 'clamp(2.5rem, 8vw, 4.5rem)', marginBottom: '1.5rem', lineHeight: 1.05, fontWeight: 900 }}>
-              Build <span className="font-lobster" style={{ color: 'var(--primary-color)', WebkitTextFillColor: 'initial', background: 'none' }}>Native Apps</span><br />
-              with <span className="font-lobster" style={{ color: 'var(--secondary-color)', WebkitTextFillColor: 'initial', background: 'none' }}>Python & Web Tech</span>
-            </motion.h1>
+        {/* Blue Roaming Data Stream */}
+        <motion.path
+          d="M -100,200 Q 200,50 400,300 T 800,100 T 1200,400 T 1600,200 T 2000,500"
+          fill="none"
+          stroke="url(#primary-fade)"
+          strokeWidth="2"
+          strokeDasharray="4 20" // Spaced out for a "data packet" look
+          strokeLinecap="round"
+          filter="url(#neon-glow)"
+          initial={{ pathLength: 0, strokeDashoffset: 0 }}
+          animate={{ 
+            pathLength: [0.2, 0.8, 0.2],
+            strokeDashoffset: [0, -200], // Moves the dots rapidly along the path
+            d: [
+              "M -100,200 Q 200,50 400,300 T 800,100 T 1200,400 T 1600,200 T 2000,500",
+              "M -100,500 Q 300,700 600,400 T 1000,600 T 1400,300 T 1800,700 T 2200,400",
+              "M -100,200 Q 200,50 400,300 T 800,100 T 1200,400 T 1600,200 T 2000,500"
+            ]
+          }}
+          transition={{ 
+            d: { duration: 25, repeat: Infinity, ease: "easeInOut" },
+            strokeDashoffset: { duration: 4, repeat: Infinity, ease: "linear" }, // Fast looping for the data flow
+            pathLength: { duration: 15, repeat: Infinity, ease: "easeInOut" }
+          }}
+        />
+        <motion.path
+          d="M -100,200 Q 200,50 400,300 T 800,100 T 1200,400 T 1600,200 T 2000,1000"
+          fill="none"
+          stroke="url(#primary-fade)"
+          strokeWidth="2"
+          strokeDasharray="4 20" // Spaced out for a "data packet" look
+          strokeLinecap="round"
+          filter="url(#neon-glow)"
+          initial={{ pathLength: 0, strokeDashoffset: 0 }}
+          animate={{ 
+            pathLength: [0.2, 0.8, 0.2],
+            strokeDashoffset: [0, -200], // Moves the dots rapidly along the path
+            d: [
+              "M -100,200 Q 200,50 400,300 T 800,100 T 1200,400 T 1600,200 T 2000,500",
+              "M -100,500 Q 300,700 600,400 T 1000,600 T 1400,300 T 1800,700 T 2200,400",
+              "M -100,200 Q 200,50 400,300 T 800,100 T 1200,400 T 1600,200 T 2000,500"
+            ]
+          }}
+          transition={{ 
+            d: { duration: 25, repeat: Infinity, ease: "easeInOut" },
+            strokeDashoffset: { duration: 4, repeat: Infinity, ease: "linear" }, // Fast looping for the data flow
+            pathLength: { duration: 15, repeat: Infinity, ease: "easeInOut" }
+          }}
+        />
+        {/* Orange Roaming Data Stream */}
+        <motion.path
+          d="M 2000,800 Q 1600,600 1300,900 T 900,700 T 500,1000 T 100,800 T -200,950"
+          fill="none"
+          stroke="url(#secondary-fade)"
+          strokeWidth="2"
+          strokeDasharray="2 12" // Tighter packets for variation
+          strokeLinecap="round"
+          filter="url(#neon-glow)"
+          initial={{ pathLength: 0, strokeDashoffset: 0 }}
+          animate={{ 
+            pathLength: [0.8, 0.2, 0.8],
+            strokeDashoffset: [0, 200], // Flows in the opposite direction
+            d: [
+              "M 2000,800 Q 1600,600 1300,900 T 900,700 T 500,1000 T 100,800 T -200,950",
+              "M 2000,300 Q 1700,100 1400,400 T 1000,200 T 600,500 T 200,300 T -200,150",
+              "M 2000,800 Q 1600,600 1300,900 T 900,700 T 500,1000 T 100,800 T -200,950"
+            ]
+          }}
+          transition={{ 
+            d: { duration: 30, repeat: Infinity, ease: "easeInOut" },
+            strokeDashoffset: { duration: 3, repeat: Infinity, ease: "linear" },
+            pathLength: { duration: 18, repeat: Infinity, ease: "easeInOut" }
+          }}
+        />
+      </svg>
+    </div>
 
-            <motion.p variants={itemVariants} style={{ fontSize: '1.1rem', maxWidth: '650px', margin: '0 auto 3rem', color: '#94a3b8', lineHeight: 1.6 }}>
-              A toolkit for building desktop applications using Python logic and modern web interfaces.
-              Produces small, standalone binaries using system-native webviews.
-            </motion.p>
+      <div className="main-content" style={{ position: 'relative', zIndex: 1 }}>
+        <SEO
+          title="Pytron-kit : Modern Python Desktop Apps"
+          description="The lightweight framework that bridges Python logic with modern web UIs. Zero friction, native performance."
+        />
+        {/* Hyper Hero */}
+        <section className="hero-section" style={{ textAlign: 'center', overflow: 'hidden', position: 'relative', minHeight: '80vh', display: 'flex', alignItems: 'center' }}>
+          <div className="container" style={{ position: 'relative', zIndex: 1 }}>
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={containerVariants}
+              style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}
+            >
 
-            <motion.div variants={itemVariants} style={{ marginBottom: '3.5rem', width: '100%', display: 'flex', justifyContent: 'center' }}>
-              <InstallSnippet />
-            </motion.div>
+              <motion.h1 
+                 variants={itemVariants} 
+                 className="text-gradient"
+                 style={{ 
+                   marginBottom: '1rem', 
+                 }}>
+                Python Logic.<br />
+                Web Interfaces.
+              </motion.h1>
 
-            <motion.div variants={itemVariants} style={{ display: 'flex', gap: '1.25rem', justifyContent: 'center', flexWrap: 'wrap', width: '100%' }}>
-              <Link href="/docs" className="btn btn-primary" style={{ fontSize: '0.95rem', padding: '0.8rem 2.5rem', minWidth: '200px', borderRadius: '8px', textTransform: 'none' }}>
-                Documentation
-              </Link>
-              <a href="https://github.com/Ghua8088/pytron" target="_blank" className="btn btn-secondary" style={{ fontSize: '0.95rem', padding: '0.8rem 2.5rem', minWidth: '200px', borderRadius: '8px', textTransform: 'none' }}>
-                GitHub Repository
-              </a>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
+              <motion.p variants={itemVariants} style={{ fontSize: '1.4rem', maxWidth: '750px', margin: '2rem auto 3.5rem', color: 'var(--text-secondary)', lineHeight: 1.4, fontWeight: 500 }}>
+                The infrastructure for high-performance desktop applications. 
+                Native power meets modern frontend speed.
+              </motion.p>
 
-      {/* Security Section */}
-      <section className="container" style={{ padding: '6rem 0', position: 'relative' }}>
-        <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem', fontWeight: 800 }}>
-              Security & <span style={{ color: 'var(--secondary-color)' }}>Source Protection</span>
-            </h2>
-            <p style={{ maxWidth: '600px', margin: '0 auto', fontSize: '1.1rem', color: 'var(--text-secondary)' }}>
-              Built-in features to protect source code and ensure application integrity.
-            </p>
-          </motion.div>
-        </div>
-
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(380px, 1fr))',
-          gap: '2.5rem',
-          width: '100%'
-        }}>
-          <PluginCard
-            title="Native Compilation"
-            version="Core"
-            icon={<Shield size={32} color="var(--primary-color)" />}
-            description="Compiles Python code into native modules to prevent direct access to source files."
-            features={["Source Encryption", "Native Loader", "Integrity Checks"]}
-            gradient="linear-gradient(135deg, rgba(6, 182, 212, 0.05), rgba(6, 182, 212, 0.01))"
-            glowColor="rgba(6, 182, 212, 0.1)"
-            delay={0.1}
-          >
-            <div style={{ height: '140px', background: 'rgba(0,0,0,0.4)', borderRadius: '1rem', padding: '1.25rem', fontFamily: 'monospace', fontSize: '13px', color: 'var(--text-secondary)', border: '1px solid var(--border-color)', overflow: 'hidden' }}>
-              <div style={{ opacity: 0.7 }}>$ pytron build</div>
-              <div style={{ color: 'var(--primary-color)', marginTop: '0.5rem' }}>[1/2] Compiling Python modules...</div>
-              <div style={{ color: 'var(--primary-color)' }}>[2/2] Generating executable...</div>
-              <div style={{ color: '#22c55e', marginTop: '0.5rem' }}>✓ Build finished.</div>
-            </div>
-          </PluginCard>
-
-          <PluginCard
-            title="Communication Bridge"
-            version="Runtime"
-            icon={<Cpu size={32} color="var(--secondary-color)" />}
-            description="A low-latency bridge for data exchange between the Python backend and the web frontend."
-            features={["Asynchronous IPC", "Type Validation", "Binary Data Support"]}
-            gradient="linear-gradient(135deg, rgba(249, 115, 22, 0.05), rgba(249, 115, 22, 0.01))"
-            glowColor="rgba(249, 115, 22, 0.1)"
-            delay={0.2}
-          >
-            <div style={{ height: '140px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '1.5rem', background: 'rgba(0,0,0,0.2)', borderRadius: '1rem', padding: '1rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem' }}>
-                <div style={{ padding: '8px 16px', background: 'rgba(255,255,255,0.05)', borderRadius: '0.5rem', border: '1px solid var(--border-color)', fontSize: '0.8rem' }}>Python</div>
-                <div style={{ height: '1px', flex: 1, background: 'linear-gradient(90deg, var(--secondary-color), transparent)', position: 'relative' }}>
-                  <motion.div animate={{ left: ['0%', '100%'] }} transition={{ repeat: Infinity, duration: 2, ease: "linear" }} style={{ position: 'absolute', top: '-2px', width: '4px', height: '4px', borderRadius: '50%', background: 'var(--secondary-color)' }} />
-                </div>
-                <div style={{ padding: '8px 16px', background: 'rgba(6, 182, 212, 0.1)', borderRadius: '0.5rem', border: '1px solid var(--primary-color)', fontSize: '0.8rem', color: 'var(--primary-color)' }}>React</div>
-              </div>
-              <div style={{ textAlign: 'center', fontSize: '0.75rem', color: 'var(--text-muted)' }}>Custom Protocol: pytron://</div>
-            </div>
-          </PluginCard>
-        </div>
-      </section>
-
-      {/* Extensions Section */}
-      <section className="container" style={{ padding: '6rem 0', position: 'relative' }}>
-        <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem', fontWeight: 800 }}>
-              Available <span style={{ color: 'var(--primary-color)' }}>Extensions</span>
-            </h2>
-            <p style={{ maxWidth: '600px', margin: '0 auto', fontSize: '1.1rem', color: 'var(--text-secondary)' }}>
-              Optional plugins for telemetry, data visualization, and advanced system integration.
-            </p>
-          </motion.div>
-        </div>
-
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(380px, 1fr))',
-          gap: '2.5rem',
-          width: '100%'
-        }}>
-          <PluginCard
-            title="Nexus Engine"
-            version="Plugin"
-            icon={<BarChart size={32} color="var(--primary-color)" />}
-            description="A visualization engine designed for rendering large datasets with minimal UI overhead."
-            features={["Efficient Canvas Rendering", "Real-time Updates", "React Hooks"]}
-            gradient="linear-gradient(135deg, rgba(6, 182, 212, 0.05), rgba(6, 182, 212, 0.01))"
-            glowColor="rgba(6, 182, 212, 0.1)"
-            delay={0.1}
-          >
-            <div style={{ marginTop: '1.5rem', height: '100px', display: 'flex', alignItems: 'flex-end', gap: '6px', opacity: 0.8, padding: '0 1rem' }}>
-              {[40, 65, 30, 80, 55, 90, 45, 70, 95, 60].map((h, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ height: '10%' }}
-                  animate={{ height: `${h}%` }}
-                  transition={{
-                    repeat: Infinity,
-                    repeatType: "reverse",
-                    duration: 2,
-                    delay: i * 0.15
-                  }}
-                  style={{
-                    flex: 1,
-                    background: 'linear-gradient(to top, var(--primary-color), transparent)',
-                    borderRadius: '4px 4px 0 0'
-                  }}
-                />
-              ))}
-            </div>
-          </PluginCard>
-
-          <PluginCard
-            title="Flight Recorder"
-            version="Plugin"
-            icon={<Activity size={32} color="var(--secondary-color)" />}
-            description="Automatic logging and diagnostic collection for debugging production applications."
-            features={["Crash Reports", "State Snapshots", "Performance Metrics"]}
-            gradient="linear-gradient(135deg, rgba(249, 115, 22, 0.05), rgba(249, 115, 22, 0.01))"
-            glowColor="rgba(249, 115, 22, 0.1)"
-            delay={0.2}
-          >
-            <div style={{ marginTop: '1.5rem', height: '100px', background: 'rgba(0,0,0,0.3)', borderRadius: '1rem', padding: '1.25rem', fontFamily: 'monospace', fontSize: '13px', color: 'var(--secondary-color)', overflow: 'hidden', position: 'relative', border: '1px solid var(--border-color)' }}>
-              <motion.div
-                animate={{ y: [0, -120] }}
-                transition={{ repeat: Infinity, duration: 8, ease: "linear" }}
-              >
-                <div style={{ opacity: 0.8 }}>[SYS] Heartbeat...</div>
-                <div style={{ color: '#fff' }}>[LOG] Memory: 42MB | CPU: 1%</div>
-                <div style={{ opacity: 0.8 }}>[IO] File system ready</div>
-                <div style={{ color: '#fff' }}>[NET] Bridge connected</div>
-                <div style={{ opacity: 0.8 }}>[SYS] Snapshot saved</div>
+              <motion.div variants={itemVariants} style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center', flexWrap: 'wrap', width: '100%' }}>
+                <Link href="/docs" className="btn btn-primary" style={{ minWidth: '220px', fontSize: '1rem', padding: '1rem 2.5rem' }}>
+                  Start Building <ArrowRight size={18} />
+                </Link>
+                <a href="https://github.com/Ghua8088/pytron" target="_blank" className="btn btn-secondary" style={{ minWidth: '220px', fontSize: '1rem', padding: '1rem 2.5rem' }}>
+                  <Github size={20} /> View Source
+                </a>
               </motion.div>
-            </div>
-          </PluginCard>
+            </motion.div>
+          </div>
+        </section>
+
+      {/* Bento Bento */}
+      <section className="container" style={{ padding: '0 0 10rem' }}>
+        <div className="bento-grid">
+          <div className="feature-card bento-span-8" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            <div style={{ marginBottom: '1.5rem', display: 'flex', color: 'var(--primary-color)' }}><Shield size={40} strokeWidth={1.5} /></div>
+            <h3 style={{ fontSize: '2rem', marginBottom: '1rem' }}>Zero-Knowledge Protection</h3>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', maxWidth: '500px' }}>
+              We compile your Python modules into native binaries. Your intellectual property stays private, your execution stays fast.
+            </p>
+          </div>
+
+          <div className="feature-card bento-span-4" style={{ textAlign: 'center', border: '1px solid var(--secondary-color)' }}>
+            <div style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'center', color: 'var(--secondary-color)' }}><Zap size={40} strokeWidth={1.5} /></div>
+            <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Native Core</h3>
+            <p style={{ color: 'var(--text-secondary)' }}>
+              Using OS-native webviews instead of Electron bloat. 10x smaller footprint.
+            </p>
+          </div>
+
+          <div className="feature-card bento-span-4">
+            <div style={{ marginBottom: '1.5rem', display: 'flex', color: 'var(--primary-color)' }}><Cpu size={40} strokeWidth={1.5} /></div>
+            <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Modern IPC</h3>
+            <p style={{ color: 'var(--text-secondary)' }}>
+              Async-first communication layer with full type safety.
+            </p>
+          </div>
+
+          <div className="feature-card bento-span-8" style={{ display: 'flex', alignItems: 'center', background: 'linear-gradient(90deg, var(--surface-color), transparent)' }}>
+             <div style={{ flex: 1 }}>
+                <h3 style={{ fontSize: '1.8rem', marginBottom: '1rem' }}>Multi-Language Frontend</h3>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem' }}>React, Vue, Svelte, or Vanilla JS. Build with what you know.</p>
+             </div>
+             <div style={{ flex: 1, opacity: 0.1, pointerEvents: 'none' }}>
+                <Layers size={150} />
+             </div>
+          </div>
         </div>
       </section>
 
@@ -294,6 +293,7 @@ export default function Home() {
         </motion.div>
       </section>
     </div>
+    </>
   );
 }
 
@@ -460,3 +460,48 @@ function FeatureCard({ icon, title, desc, delay }) {
     </motion.div>
   );
 }
+export const BackgroundRays = () => {
+  return (
+    <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0, overflow: 'hidden' }}>
+      <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.6) 100%)' }} />
+      
+      <svg width="100%" height="100%" style={{ opacity: 0.7 }}>
+        <defs>
+          <filter id="neon-glow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="6" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+
+        {/* 2. Map through the array to generate paths dynamically */}
+        {streamData.map((stream) => (
+          <motion.path
+            key={stream.id}
+            d={stream.paths[0]}
+            fill="none"
+            stroke={stream.color}
+            strokeWidth="2"
+            strokeDasharray={stream.dash}
+            strokeLinecap="round"
+            filter="url(#neon-glow)"
+            initial={{ pathLength: 0, strokeDashoffset: 0 }}
+            animate={{ 
+              pathLength: [0.2, 0.8, 0.2],
+              strokeDashoffset: [0, stream.flowDirection], 
+              d: stream.paths
+            }}
+            transition={{ 
+              d: { duration: stream.speed, repeat: Infinity, ease: "easeInOut" },
+              strokeDashoffset: { duration: stream.speed / 6, repeat: Infinity, ease: "linear" }, 
+              pathLength: { duration: stream.speed * 0.6, repeat: Infinity, ease: "easeInOut" }
+            }}
+          />
+        ))}
+      </svg>
+    </div>
+  );
+};

@@ -30,6 +30,7 @@ const breadcrumbMap = {
   '/docs/security': 'Security',
   '/docs/vap': 'Virtual IPC',
   '/docs/cli': 'CLI & Tools',
+  '/docs/api-reference': 'API Reference',
   '/docs/menus': 'Menus & Tray',
   '/docs/binary-evolution': 'Binary Evolution',
   '/docs/dependency-management': 'Dependency Management',

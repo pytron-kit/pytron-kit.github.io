@@ -63,67 +63,113 @@ export default function CLI() {
 
       <h2>Commands</h2>
 
-      <h3>Initialize</h3>
+      <h3>Project Initialization</h3>
       <p>Scaffold a new project with your preferred frontend framework.</p>
-      <CodeBlock language="bash" code="pytron init <project_name> --template <framework>" />
-      <p>Supported templates: <code>react</code>, <code>vue</code>, <code>svelte</code>, <code>next</code>, <code>solid</code>, and more.</p>
+      <CodeBlock language="bash" code="pytron init <project_name> --template <framework> --provider <provider>" />
+      <p>Supported templates: <code>react</code>, <code>vue</code>, <code>svelte</code>, <code>next</code>, <code>solid</code>, and more. Supported providers: <code>npm</code>, <code>yarn</code>, <code>pnpm</code>, <code>bun</code>.</p>
 
-      <h3>Install & Uninstall</h3>
-      <p>Manage Python dependencies in your project's virtual environment.</p>
+      <h3>Dependency Management</h3>
+      <p>Manage Python dependencies in your project's virtual environment or proxy frontend commands.</p>
       <CodeBlock language="bash" code={`# Install from requirements.json
 pytron install
 
-# Install specific package
+# Install specific Python package
 pytron install numpy
 
-# Proxy any npm command to the frontend directory
+# Uninstall Python package
+pytron uninstall numpy
+
+# List installed Python packages
+pytron show
+
+# Proxy any npm/yarn/bun command to the frontend directory
 pytron frontend install
 pytron frontend run dev
-
-# Use a different provider (yarn, pnpm, bun)
-pytron frontend --provider yarn add lucide-react
-pytron frontend --provider bun run dev
-pytron frontend --provider pnpm build
-
-# Uninstall package
-pytron uninstall numpy`} />
+pytron frontend --provider bun run build`} />
 
       <h3>Environment & Diagnostics</h3>
       <p>Check your system for dependencies or show information about the current environment.</p>
-      <CodeBlock language="bash" code={`# Run system diagnostic
+      <CodeBlock language="bash" code={`# Run system diagnostics
 pytron doctor
 
 # Show environment info
-pytron info
+pytron info`} />
 
-# List installed packages
-pytron show`} />
-
-      <h3>Run</h3>
+      <h3>Run & Debug</h3>
       <p>Start the application. Use <code>--dev</code> for hot-reloading.</p>
-      <CodeBlock language="bash" code={`# Run with hot reload
+      <CodeBlock language="bash" code={`# Run with hot reload & frontend watch
 pytron run --dev
 
 # Run specific script
-pytron run my_app.py`} />
+pytron run my_app.py
 
+# Skip automatic frontend build
+pytron run --no-build
+
+# Run with specific engine
+pytron run --engine chrome
+# Shortcut for chrome engine
+pytron run --chrome`} />
 
       <h3>Packaging</h3>
-      <p>Create a standalone executable or installer. Use <code>--secure</code> for Agentic Shield or <code>--nuitka</code> for machine-code compilation.</p>
+      <p>Create a standalone executable or installer.</p>
       <CodeBlock language="bash" code={`# Create standard executable
 pytron package
 
-# Pack with Agentic Shield (Encrypted)
-pytron package --secure
+# Package a specific script
+pytron package custom_app.py --name "MyApp" --icon icon.ico
 
-# Compile with Nuitka (Machine Code)
-pytron package --nuitka
+# Advanced Packaging Options
+pytron package --secure      # Enable Rust Bootloader (Protects logic)
+pytron package --fortress    # Enable Fortress Architecture (Hardened Core)
+pytron package --nuitka      # Compile with Nuitka (Machine Code)
+pytron package --installer   # Create Professional NSIS Installer
+pytron package --pack        # Pack frontend assets into a single .pytron archive
+pytron package --one-file    # Build single executable (default for Nuitka)
+pytron package --one-dir     # Build folder distribution (default for PyInstaller)`} />
 
-# Create Professional Installer
-pytron package --installer`} />
+      <h3>Plugins</h3>
+      <p>Manage application plugins.</p>
+      <CodeBlock language="bash" code={`# Install a plugin from GitHub
+pytron plugin install username.repo.version
+
+# List installed plugins
+pytron plugin list
+
+# Scaffold a new plugin
+pytron plugin create my-plugin-name
+
+# Uninstall a plugin
+pytron plugin uninstall my-plugin-name`} />
+
+      <h3>Authentication</h3>
+      <p>Manage GitHub credentials for private plugins and repositories.</p>
+      <CodeBlock language="bash" code={`# Securely store GitHub credentials
+pytron login
+
+# Log out and remove stored credentials
+pytron logout`} />
+
+      <h3>Browser Engines</h3>
+      <p>Manage browser engines for the runtime.</p>
+      <CodeBlock language="bash" code={`# Install/Forge a browser engine
+pytron engine install chrome`} />
+
+      <h3>CI/CD Workflows</h3>
+      <p>Generate workflow configurations for CI/CD environments.</p>
+      <CodeBlock language="bash" code={`# CI/CD Workflow management
+pytron workflow`} />
+
+      <h3>Automated Documentation</h3>
+      <p>Generate automated API documentation for your Pytron project.</p>
+      <CodeBlock language="bash" code={`# Generate docs with default vibrant theme
+pytron docs
+
+# Generate docs to specific output dir with different theme
+pytron docs --output ./my-docs --theme glass`} />
 
       <h3>Android (Experimental)</h3>
-      <p>Initialize and build for Android devices. This command syncs your Python logic and frontend into a pre-configured Android project template.</p>
+      <p>Initialize and build for Android devices. Syncs your Python logic and frontend into a pre-configured Android project template.</p>
       <CodeBlock language="bash" code={`# Initialize Android project
 pytron android init
 
@@ -133,6 +179,12 @@ pytron android sync
 # Build & Run on connected device
 pytron android build
 pytron android run
+
+# View Logcat
+pytron android logcat
+
+# Build Android App Bundle (.aab) for Google Play Store
+pytron android build --aab
 
 # Reset to initial state
 pytron android reset`} />
