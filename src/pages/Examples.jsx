@@ -7,13 +7,13 @@ import SEO from '../components/SEO';
 const examples = [
   {
     title: "Bite",
-    description: "A production-ready launcher app (Spotlight/Raycast alternative). Features local file search, system commands, and calculator. Full source available.",
-    tags: ['Any Framework', 'File System', 'Python'],
+    description: "An ultra-fast, extensible system launcher & productivity workstation. Features Perceptron neural intent, Python workflows, OS keychain vault, and live port manager.",
+    tags: ['Extensible Launcher', 'Neural Intent', 'Python + React'],
     repoUrl: `/bite`,
     icon: `/examples/bite/bite.png`,
-    image: `/examples/bite/screenshot.png`,
+    image: `/examples/bite/bite-banner.png`,
     featured: true,
-    buttonText: "View Case Study",
+    buttonText: "Explore Bite",
     buttonIcon: <Layout size={16} />,
     isInternal: true
   },

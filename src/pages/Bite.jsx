@@ -1,473 +1,532 @@
 "use client";
-import { motion } from 'framer-motion';
-import { Search, Command, Zap, Download, Terminal, Layers, Github, Cpu, Layout, Folder, AtSign, Brain, Workflow, Clipboard, Link as LinkIcon, Settings, Hash, Calculator, ChevronRight } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+    Download, Terminal, Github, Folder, AtSign, Brain,
+    Workflow, ShieldCheck, Radio, HardDrive, Clock, Copy, Check,
+    Sparkles, ArrowRight, CornerDownLeft, Search, Zap, Code, ChevronRight
+} from 'lucide-react';
 import SEO from '../components/SEO';
-import Callout from '../components/Callout';
+
+const BANNER_URL = "/examples/bite/bite-banner.png";
+const DEFAULT_DOWNLOAD_URL = "https://github.com/Ghua8088/py-cast/releases/download/v0.3.5/Bite_Installer_0.3.5.exe";
+const RELEASES_PAGE_URL = "https://github.com/Ghua8088/py-cast/releases";
+
+// Curated interactive spotlight features
+const SPOTLIGHT_FEATURES = [
+    {
+        id: "brain",
+        title: "Perceptron Brain",
+        headline: "Predicts intent before you type",
+        desc: "Learns your daily patterns through mathematical weights and decay entropy. Surfaces the exact files, workflows, or bookmarks you need based on your active app and time of day.",
+        badge: "Neural Ghost Intent",
+        icon: <Brain size={20} />,
+        syntax: "Empty Query State → 94% top-hit prediction",
+        actionText: "Learns locally with zero cloud telemetry"
+    },
+    {
+        id: "terminal",
+        title: "Terminal Mode",
+        headline: "Run shell commands with instant Tab completion",
+        desc: "Type t: followed by any CLI command. Features smart path-swallowing to auto-complete deep folder paths as you type without context switching.",
+        badge: "t: <command>",
+        icon: <Terminal size={20} />,
+        syntax: "t: git commit -m 'feat: update' && git push",
+        actionText: "Executes in user home CWD with shell fallback"
+    },
+    {
+        id: "workflows",
+        title: "Python Workflows",
+        headline: "Hot-reloadable .py automations",
+        desc: "Draft scripts in the in-launcher Python Lab or drop .py files directly into ~/.config/Bite/workflows. Bite discovers them instantly without restarting.",
+        badge: "wf: <script>",
+        icon: <Workflow size={20} />,
+        syntax: "wf: optimize_images.py --quality 85",
+        actionText: "Full access to Pytron OS bridge & clipboard"
+    },
+    {
+        id: "vault",
+        title: "OS Keychain Vault",
+        headline: "Secure credentials with Master PIN",
+        desc: "Stores API keys directly inside Windows Credential Manager, macOS Keychain, and Linux Secret Service. Copy decrypted tokens to clipboard without plain-text exposure.",
+        badge: "env: <key>",
+        icon: <ShieldCheck size={20} />,
+        syntax: "env: OPENAI_API_KEY  →  [↵] Copied",
+        actionText: "Zero plain-text credentials stored on disk"
+    },
+    {
+        id: "system",
+        title: "Port & Process Assassin",
+        headline: "Inspect sockets & terminate frozen tasks",
+        desc: "Type 'port 3000' to find the exact PID occupying a port and kill it instantly with Enter. Terminate unresponsive node or python processes in seconds.",
+        badge: "port <num> / kill <name>",
+        icon: <Radio size={20} />,
+        syntax: "port 3000  →  PID 14208 (node.exe)  →  [↵] Killed",
+        actionText: "Emergency 'clean' command kills zombie Python threads"
+    }
+];
+
+// Essential command reference
+const COMMAND_PRESETS = [
+    { cmd: "t: <cmd>", desc: "Execute shell command in native terminal", eg: "t: npm run build" },
+    { cmd: "port <num>", desc: "Inspect socket holder PID & free port", eg: "port 3000" },
+    { cmd: "kill <name>", desc: "Terminate process by name with RAM stats", eg: "kill node" },
+    { cmd: "wf: <script>", desc: "Execute custom Python workflow script", eg: "wf: backup_db" },
+    { cmd: "env: <key>", desc: "Query OS Keychain Vault & copy secret", eg: "env: STRIPE_KEY" },
+    { cmd: "@<alias>", desc: "Universal folder path shorthand expansion", eg: "@work/backend" },
+    { cmd: "clip <query>", desc: "Search 50-item persistent clipboard history", eg: "clip webhook" },
+    { cmd: "timer: <time>", desc: "Start in-launcher countdown with alert", eg: "timer: 25m" },
+    { cmd: "<math / unit>", desc: "Instant math, trigonometry & currency forex", eg: "100 usd to eur" },
+    { cmd: "clean", desc: "Emergency kill switch for zombie Python threads", eg: "clean" }
+];
 
 export default function BitePage() {
-    const [release, setRelease] = useState(null);
+    const [release, setRelease] = useState({
+        url: DEFAULT_DOWNLOAD_URL,
+        version: "v0.3.5",
+        os: "Windows",
+        name: "Bite_Installer_0.3.5.exe"
+    });
+    const [activeFeature, setActiveFeature] = useState(SPOTLIGHT_FEATURES[0]);
+    const [copiedCmd, setCopiedCmd] = useState('');
 
     useEffect(() => {
-        fetch('https://api.github.com/repos/Ghua8088/py-cast/releases/latest')
-            .then(res => res.ok ? res.json() : null)
-            .then(data => {
-                if (data && data.assets && data.assets.length > 0) {
-                    const userAgent = window.navigator.userAgent.toLowerCase();
-                    const isMac = userAgent.includes('mac');
-                    const isWindows = userAgent.includes('win');
-                    const isLinux = userAgent.includes('linux');
+        const userAgent = typeof window !== 'undefined' ? window.navigator.userAgent.toLowerCase() : '';
+        const isMac = userAgent.includes('mac');
+        const isWindows = userAgent.includes('win');
+        const isLinux = userAgent.includes('linux');
 
-                    let asset;
-                    if (isMac) {
-                        asset = data.assets.find(a => a.name.endsWith('.dmg') || a.name.endsWith('.pkg'));
-                    } else if (isWindows) {
-                        asset = data.assets.find(a => a.name.endsWith('.exe') || a.name.endsWith('.msi'));
-                    } else if (isLinux) {
-                        asset = data.assets.find(a => a.name.endsWith('.AppImage') || a.name.endsWith('.deb') || a.name.endsWith('.rpm'));
+        fetch('https://api.github.com/repos/Ghua8088/py-cast/releases')
+            .then(res => (res.ok ? res.json() : []))
+            .then(releases => {
+                if (Array.isArray(releases) && releases.length > 0) {
+                    const latest = releases.find(r => !r.draft) || releases[0];
+                    if (latest && latest.assets && latest.assets.length > 0) {
+                        let asset;
+                        if (isMac) {
+                            asset = latest.assets.find(a => a.name.endsWith('.dmg') || a.name.endsWith('.pkg'));
+                        } else if (isWindows) {
+                            asset = latest.assets.find(a => a.name.endsWith('.exe') || a.name.endsWith('.msi'));
+                        } else if (isLinux) {
+                            asset = latest.assets.find(a => a.name.endsWith('.AppImage') || a.name.endsWith('.deb') || a.name.endsWith('.rpm'));
+                        }
+
+                        if (!asset) asset = latest.assets[0];
+
+                        setRelease({
+                            url: asset.browser_download_url,
+                            version: latest.tag_name || 'v0.3.5',
+                            os: isWindows ? 'Windows' : isMac ? 'macOS' : isLinux ? 'Linux' : 'Desktop',
+                            name: asset.name
+                        });
                     }
-
-                    // Fallback to first asset if no OS specific match
-                    if (!asset) asset = data.assets[0];
-
-                    setRelease({
-                        url: asset.browser_download_url,
-                        version: data.tag_name,
-                        os: isWindows ? 'Windows' : isMac ? 'macOS' : isLinux ? 'Linux' : ''
-                    });
                 }
             })
-            .catch(() => { });
+            .catch(() => {
+                // Keep default direct installer URL
+            });
     }, []);
 
+    const copyText = (text, id) => {
+        navigator.clipboard?.writeText(text);
+        setCopiedCmd(id);
+        setTimeout(() => setCopiedCmd(''), 2000);
+    };
+
     return (
-        <div className="agentic-theme" style={{ backgroundColor: '#09090b', overflowX: 'hidden', color: '#fff' }}>
-            <SEO title="Bite Showcase | Pytron-kit" />
+        <div className="bite-night-canvas">
+            <SEO
+                title="Bite — Extensible System Launcher & Dev Workstation"
+                description="Ultra-fast, extensible system launcher built on Pytron Kit. Featuring Perceptron neural intent, Python workflows, OS keychain vault, and live port manager."
+            />
 
             <style dangerouslySetInnerHTML={{
                 __html: `
-                .bite-guide-grid {
-                    display: grid;
-                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-                    gap: 1.5rem;
+                .bite-night-canvas {
+                    background-color: rgba(26,26,26, 1);
+                    color: #e2e8f0;
+                    min-height: 100vh;
+                    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+                    overflow-x: hidden;
+                    position: relative;
                 }
-                @media (max-width: 768px) {
-                    .bite-guide-grid {
-                        grid-template-columns: 1fr;
-                    }
+
+                /* Subtle continuous starry sky */
+                .night-sky-overlay {
+                    position: fixed;
+                    inset: 0;
+                    background-image: 
+                        radial-gradient(1px 1px at 30px 40px, #ffffff, rgba(0,0,0,0)),
+                        radial-gradient(1.5px 1.5px at 160px 100px, #d8b4fe, rgba(0,0,0,0)),
+                        radial-gradient(1px 1px at 320px 240px, #ffffff, rgba(0,0,0,0)),
+                        radial-gradient(1.5px 1.5px at 490px 340px, #e9d5ff, rgba(0,0,0,0)),
+                        radial-gradient(1px 1px at 670px 180px, #ffffff, rgba(0,0,0,0)),
+                        radial-gradient(1.5px 1.5px at 840px 460px, #d8b4fe, rgba(0,0,0,0)),
+                        radial-gradient(1px 1px at 1020px 200px, #ffffff, rgba(0,0,0,0)),
+                        radial-gradient(1.5px 1.5px at 1180px 350px, #e9d5ff, rgba(0,0,0,0));
+                    background-size: 650px 650px;
+                    opacity: 0.5;
+                    pointer-events: none;
+                    z-index: 0;
                 }
-                .code-pill {
-                    background: rgba(255, 255, 255, 0.05);
-                    border: 1px solid rgba(255, 255, 255, 0.1);
-                    padding: 0.1rem 0.4rem;
-                    border-radius: 4px;
-                    font-family: 'Fira Code', monospace;
-                    font-size: 0.9em;
-                    color: #06b6d4;
+
+                .banner-hero-img {
+                    max-width: 820px;
+                    width: 100%;
+                    height: auto;
+                    display: block;
+                    margin: 0 auto;
+                    border-radius: 12px;
                 }
-                .guide-header {
-                    font-family: 'Space Grotesk', sans-serif;
-                    background: linear-gradient(90deg, #a855f7, #06b6d4);
-                    -webkit-background-clip: text;
-                    background-clip: text;
-                    -webkit-text-fill-color: transparent;
-                    margin-bottom: 3rem;
-                    font-weight: 800;
-                    text-align: center;
-                    font-size: 3rem;
+
+                .clean-btn-primary {
+                    background: #b49bc8;
+                    color: #161618;
+                    font-weight: 700;
+                    padding: 0.85rem 2.2rem;
+                    border-radius: 9999px;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.6rem;
+                    transition: all 0.2s ease;
+                    text-decoration: none;
+                }
+                .clean-btn-primary:hover {
+                    background: #c5aed7;
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 25px rgba(180, 155, 200, 0.3);
+                }
+
+                .clean-btn-secondary {
+                    background: rgba(255, 255, 255, 0.04);
+                    color: #e2e8f0;
+                    font-weight: 600;
+                    padding: 0.85rem 2rem;
+                    border-radius: 9999px;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.6rem;
+                    border: 1px solid rgba(255, 255, 255, 0.12);
+                    transition: all 0.2s ease;
+                    text-decoration: none;
+                }
+                .clean-btn-secondary:hover {
+                    background: rgba(255, 255, 255, 0.08);
+                    border-color: rgba(255, 255, 255, 0.25);
+                    transform: translateY(-2px);
+                }
+
+                .spotlight-nav-btn {
+                    width: 100%;
+                    text-align: left;
+                    padding: 1.1rem 1.25rem;
+                    border-radius: 12px;
+                    background: transparent;
+                    border: 1px solid transparent;
+                    color: #94a3b8;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    transition: all 0.2s ease;
+                    font-family: inherit;
+                }
+                .spotlight-nav-btn:hover {
+                    background: rgba(255, 255, 255, 0.03);
+                    color: #e2e8f0;
+                }
+                .spotlight-nav-btn.active {
+                    background: rgba(180, 155, 200, 0.1);
+                    border-color: rgba(180, 155, 200, 0.3);
+                    color: #ffffff;
+                }
+
+                .code-chip {
+                    background: rgba(180, 155, 200, 0.1);
+                    border: 1px solid rgba(180, 155, 200, 0.22);
+                    padding: 0.2rem 0.5rem;
+                    border-radius: 6px;
+                    font-family: 'Fira Code', 'JetBrains Mono', monospace;
+                    font-size: 0.86em;
+                    color: #d8b4fe;
                 }
             `}} />
 
-            {/* Neon Abstract Background */}
-            <div style={{
-                position: 'fixed',
-                top: '-20%', left: '-10%', right: '-10%', bottom: '-20%',
-                background: 'radial-gradient(circle at 30% 20%, rgba(168, 85, 247, 0.15) 0%, transparent 40%), radial-gradient(circle at 70% 80%, rgba(6, 182, 212, 0.15) 0%, transparent 40%)',
-                zIndex: -1,
-                pointerEvents: 'none',
-                filter: 'blur(80px)'
-            }} />
-            <div style={{
-                position: 'fixed',
-                inset: 0,
-                backgroundImage: 'repeating-linear-gradient(rgba(255,255,255,0.02) 0 1px, transparent 1px 100%)',
-                backgroundSize: '100% 4px',
-                zIndex: -1,
-                pointerEvents: 'none'
-            }} />
+            <div className="night-sky-overlay" />
 
-            <section className="hero-section" style={{ minHeight: 'auto', padding: '8rem 2rem 6rem', background: 'transparent' }}>
-                <div className="container">
+            {/* HERO: BANNER AS THE NATURAL WORD ART */}
+            <section style={{ padding: '6rem 1.5rem 3.5rem', position: 'relative', zIndex: 1 }}>
+                <div style={{ maxWidth: '960px', margin: '0 auto', textAlign: 'center' }}>
                     <motion.div
-                        initial={{ opacity: 0, y: 30 }}
+                        initial={{ opacity: 0, y: 15 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, ease: "easeOut" }}
-                        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+                        transition={{ duration: 0.6, ease: "easeOut" }}
                     >
-                        <div style={{
-                            background: 'rgba(168, 85, 247, 0.15)',
-                            border: '1px solid rgba(168, 85, 247, 0.4)',
-                            padding: '0.4rem 1.4rem',
-                            borderRadius: '100px',
-                            fontSize: '0.75rem',
-                            color: '#e879f9',
-                            marginBottom: '2rem',
-                            fontWeight: 800,
-                            letterSpacing: '0.2em',
-                            textTransform: 'uppercase',
-                            boxShadow: '0 0 20px rgba(168, 85, 247, 0.2)'
-                        }}>
-                            Productivity Launcher
-                        </div>
-
-                        <h1 style={{
-                            fontSize: 'clamp(3.5rem, 8vw, 6.5rem)',
-                            marginBottom: '1rem',
-                            color: '#fff',
-                            fontWeight: 900,
-                            letterSpacing: '-0.05em',
-                            textShadow: '0 0 50px rgba(168, 85, 247, 0.5)'
-                        }}>
-                            Bite<span style={{ color: '#06b6d4' }}>.</span>
-                        </h1>
-
-                        <p style={{
-                            fontSize: '1.25rem',
-                            maxWidth: '700px',
-                            color: '#a1a1aa',
-                            marginBottom: '3rem',
-                            lineHeight: 1.6,
-                            textAlign: 'center'
-                        }}>
-                            An intelligent, extensible launcher for developers. <br />
-                            Search files, execute scripts, and manage your system from a single bar.
-                        </p>
-
-                        <div style={{
-                            width: '100%',
-                            maxWidth: '900px',
-                            background: 'rgba(24, 24, 27, 0.6)',
-                            borderRadius: '1rem',
-                            border: '1px solid rgba(6, 182, 212, 0.3)',
-                            padding: '1rem',
-                            marginBottom: '4rem',
-                            boxShadow: '0 30px 60px rgba(0,0,0,0.8), 0 0 30px rgba(168, 85, 247, 0.15)',
-                            backdropFilter: 'blur(20px)',
-                            position: 'relative'
-                        }}>
+                        {/* Clean Wordmark Banner */}
+                        <div style={{ marginBottom: '1.75rem' }}>
                             <img
-                                src={`/examples/bite/bite-banner.png`}
-                                alt="Bite Banner"
-                                style={{ width: '100%', borderRadius: '0.5rem', display: 'block' }}
+                                src={BANNER_URL}
+                                alt="Bite"
+                                className="banner-hero-img"
                             />
                         </div>
 
-                        <div style={{ display: 'flex', gap: '1.25rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-                            <a href={release?.url || "https://github.com/Ghua8088/py-cast/releases"} target="_blank" style={{
-                                padding: '1rem 3rem',
-                                background: 'linear-gradient(90deg, #a855f7, #06b6d4)',
-                                color: '#fff',
-                                fontWeight: 700,
-                                borderRadius: '100px',
-                                textDecoration: 'none',
-                                display: 'flex', alignItems: 'center', gap: '0.5rem',
-                                boxShadow: '0 10px 30px rgba(168, 85, 247, 0.4)',
-                                transition: 'transform 0.2s',
-                            }}
-                                onMouseOver={e => e.currentTarget.style.transform = 'scale(1.05)'}
-                                onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}
+                        {/* Punchy, Clean Subtitle */}
+                        <p style={{
+                            fontSize: 'clamp(1.1rem, 2vw, 1.3rem)',
+                            maxWidth: '680px',
+                            margin: '0 auto 2.25rem',
+                            color: '#cbd5e1',
+                            lineHeight: 1.6,
+                            fontWeight: 400
+                        }}>
+                            An ultra-fast, extensible system launcher & developer workstation.
+                            Built with Pytron Kit for local-first speed, neural ghost intent, and native OS control.
+                        </p>
+
+                        {/* Clean CTA Buttons */}
+                        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '2.5rem' }}>
+                            <a
+                                href={release.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="clean-btn-primary"
                             >
-                                <Download size={18} /> {release ? `Download for ${release.os} ${release.version}` : "Download Bite"}
+                                <Download size={18} />
+                                <span>Download Bite {release?.version ? `(${release.version})` : ''}</span>
                             </a>
-                            <a href="https://github.com/Ghua8088/py-cast" target="_blank" style={{
-                                padding: '1rem 3rem',
-                                background: 'rgba(255,255,255,0.05)',
-                                color: '#fff',
-                                fontWeight: 700,
-                                borderRadius: '100px',
-                                border: '1px solid rgba(255,255,255,0.1)',
-                                textDecoration: 'none',
-                                display: 'flex', alignItems: 'center', gap: '0.5rem',
-                                transition: 'all 0.2s',
-                            }}
-                                onMouseOver={e => { e.currentTarget.style.transform = 'scale(1.05)'; e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; }}
-                                onMouseOut={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; }}
+                            <a
+                                href="https://github.com/Ghua8088/py-cast"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="clean-btn-secondary"
                             >
-                                <Github size={18} /> View Repository
+                                <Github size={18} />
+                                <span>Star on GitHub</span>
                             </a>
+                        </div>
+
+                        <div style={{ fontSize: '0.85rem', color: '#94a3b8' }}>
+                            Global hotkey: <span className="code-chip">Alt + B</span> · 100% Offline & Local
                         </div>
                     </motion.div>
                 </div>
             </section>
 
-            <section className="container" style={{ paddingBottom: '6rem' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
-                    <FeatureCard icon={<Search />} title="Deep File Search" desc="Recursively search directories instantly. Supports Regex patterns." color="#a855f7" />
-                    <FeatureCard icon={<Command />} title="System Control" desc="Sleep, Shutdown, Lock, or toggle Dark Mode directly." color="#06b6d4" />
-                    <FeatureCard icon={<Terminal />} title="Scriptable" desc="Add Python scripts as shortcuts. If it runs in Python, it runs in Bite." color="#3b82f6" />
+            {/* INTERACTIVE FEATURE SPOTLIGHT */}
+            <section style={{ padding: '4rem 1.5rem 5rem', position: 'relative', zIndex: 1 }}>
+                <div style={{ maxWidth: '1020px', margin: '0 auto' }}>
+                    <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+                        <h2 style={{ fontSize: 'clamp(1.8rem, 3.2vw, 2.4rem)', fontWeight: 800, margin: '0 0 0.5rem', color: '#fff' }}>
+                            Core Capabilities
+                        </h2>
+                        <p style={{ color: '#94a3b8', fontSize: '0.98rem', margin: 0 }}>
+                            Click any capability to inspect how Bite operates under the hood:
+                        </p>
+                    </div>
+
+                    <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1.4fr)',
+                        gap: '1.5rem',
+                        alignItems: 'stretch'
+                    }}>
+                        {/* Left List of Capabilities */}
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                            {SPOTLIGHT_FEATURES.map((feat) => {
+                                const isActive = activeFeature.id === feat.id;
+                                return (
+                                    <button
+                                        key={feat.id}
+                                        onClick={() => setActiveFeature(feat)}
+                                        className={`spotlight-nav-btn ${isActive ? 'active' : ''}`}
+                                    >
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                            <div style={{ color: isActive ? '#d8b4fe' : '#94a3b8' }}>
+                                                {feat.icon}
+                                            </div>
+                                            <div>
+                                                <div style={{ fontSize: '0.95rem', fontWeight: 600 }}>
+                                                    {feat.title}
+                                                </div>
+                                                <div style={{ fontSize: '0.78rem', color: '#64748b' }}>
+                                                    {feat.badge}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <ChevronRight size={16} style={{ opacity: isActive ? 1 : 0.4 }} />
+                                    </button>
+                                );
+                            })}
+                        </div>
+
+                        {/* Right Interactive Showcase Stage */}
+                        <div style={{
+                            background: 'rgba(24, 23, 27, 0.75)',
+                            border: '1px solid rgba(255, 255, 255, 0.08)',
+                            borderRadius: '16px',
+                            padding: '2rem',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'space-between',
+                            backdropFilter: 'blur(10px)'
+                        }}>
+                            <AnimatePresence mode="wait">
+                                <motion.div
+                                    key={activeFeature.id}
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -10 }}
+                                    transition={{ duration: 0.25 }}
+                                >
+                                    <div style={{ display: 'inline-block', marginBottom: '0.75rem' }}>
+                                        <span className="code-chip">{activeFeature.badge}</span>
+                                    </div>
+                                    <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#fff', margin: '0 0 0.5rem' }}>
+                                        {activeFeature.headline}
+                                    </h3>
+                                    <p style={{ color: '#94a3b8', fontSize: '0.95rem', lineHeight: 1.65, margin: '0 0 1.75rem' }}>
+                                        {activeFeature.desc}
+                                    </p>
+
+                                    {/* Code / Command Preview Box */}
+                                    <div style={{
+                                        background: '#0e0d10',
+                                        border: '1px solid rgba(180, 155, 200, 0.15)',
+                                        borderRadius: '10px',
+                                        padding: '1rem 1.25rem',
+                                        fontFamily: 'monospace',
+                                        fontSize: '0.88rem',
+                                        color: '#e2e8f0',
+                                        marginBottom: '1rem',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'space-between',
+                                        gap: '0.5rem'
+                                    }}>
+                                        <span style={{ color: '#b49bc8' }}>{activeFeature.syntax}</span>
+                                        <button
+                                            onClick={() => copyText(activeFeature.syntax, 'feat-copy')}
+                                            style={{ background: 'transparent', border: 'none', color: '#94a3b8', cursor: 'pointer', padding: 2 }}
+                                            title="Copy snippet"
+                                        >
+                                            {copiedCmd === 'feat-copy' ? <Check size={16} className="text-purple-300" /> : <Copy size={16} />}
+                                        </button>
+                                    </div>
+
+                                    <div style={{ fontSize: '0.8rem', color: '#64748b' }}>
+                                        ✦ {activeFeature.actionText}
+                                    </div>
+                                </motion.div>
+                            </AnimatePresence>
+                        </div>
+                    </div>
                 </div>
             </section>
 
-            {/* User Guide Section */}
-            <section className="container" style={{ paddingBottom: '10rem' }}>
-                <h2 className="guide-header">User Guide</h2>
+            {/* CLEAN COMMANDS CHEATSHEET */}
+            <section style={{ padding: '3.5rem 1.5rem 5rem', position: 'relative', zIndex: 1 }}>
+                <div style={{ maxWidth: '960px', margin: '0 auto' }}>
+                    <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+                        <h2 style={{ fontSize: 'clamp(1.8rem, 3.2vw, 2.4rem)', fontWeight: 800, margin: '0 0 0.5rem', color: '#fff' }}>
+                            Search Prefixes at a Glance
+                        </h2>
+                        <p style={{ color: '#94a3b8', fontSize: '0.98rem', margin: 0 }}>
+                            Execute direct shortcuts right from the main launcher bar:
+                        </p>
+                    </div>
 
-                <div className="bite-guide-grid">
-                    <GuideCard
-                        icon={<Folder />}
-                        title="Path Navigation (Terminal-Perfect)"
-                        number="01"
-                        color="#a855f7"
-                    >
-                        <p>Bite treats your filesystem like a high-performance shell.</p>
-                        <ul>
-                            <li><strong>Direct Entry:</strong> Type any path (e.g., <span className="code-pill">D:\Projects\</span>) to start browsing instantly.</li>
-                            <li><strong>Strict Matching:</strong> We prioritize items that start with your query. Hidden files (starting with .) are ignored unless you explicitly type a dot.</li>
-                            <li><strong>Instant Tab:</strong> Press <span className="code-pill">Tab</span> to complete the first suggestion immediately without using arrow keys.</li>
-                            <li><strong>Auto-Enter:</strong> Hit <span className="code-pill">Enter</span> to open the first folder result.</li>
-                        </ul>
-                    </GuideCard>
+                    <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                        gap: '0.85rem'
+                    }}>
+                        {COMMAND_PRESETS.map((item, idx) => (
+                            <div
+                                key={idx}
+                                style={{
+                                    background: 'rgba(24, 23, 27, 0.6)',
+                                    border: '1px solid rgba(255, 255, 255, 0.06)',
+                                    borderRadius: '10px',
+                                    padding: '1rem 1.25rem',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    justifyContent: 'space-between',
+                                    gap: '0.6rem'
+                                }}
+                            >
+                                <div>
+                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
+                                        <span className="code-chip" style={{ fontWeight: 700 }}>{item.cmd}</span>
+                                    </div>
+                                    <p style={{ fontSize: '0.85rem', color: '#94a3b8', margin: 0, lineHeight: 1.4 }}>
+                                        {item.desc}
+                                    </p>
+                                </div>
+                                <div style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
+                                    background: 'rgba(0,0,0,0.3)',
+                                    padding: '0.35rem 0.6rem',
+                                    borderRadius: '6px',
+                                    fontFamily: 'monospace',
+                                    fontSize: '0.78rem',
+                                    color: '#b49bc8'
+                                }}>
+                                    <span>{item.eg}</span>
+                                    <button
+                                        onClick={() => copyText(item.eg, `cmd-${idx}`)}
+                                        style={{ background: 'transparent', border: 'none', color: '#94a3b8', cursor: 'pointer', padding: 2 }}
+                                        title="Copy command"
+                                    >
+                                        {copiedCmd === `cmd-${idx}` ? <Check size={13} className="text-purple-300" /> : <Copy size={13} />}
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
 
-                    <GuideCard
-                        icon={<Terminal />}
-                        title="Terminal Mode (t:)"
-                        number="02"
-                        color="#06b6d4"
-                    >
-                        <p>Run system commands without leaving your search bar.</p>
-                        <ul>
-                            <li><strong>Prefix:</strong> Start any query with <span className="code-pill">t:</span> (e.g., <span className="code-pill">t: ipconfig</span> or <span className="code-pill">t: ls -la</span>).</li>
-                            <li><strong>Autofill:</strong> As you type paths in terminal mode, we provide "Instant Autofill" suggestions. Press <span className="code-pill">Tab</span> to "swallow" the path and keep typing.</li>
-                        </ul>
-                    </GuideCard>
-
-                    <GuideCard
-                        icon={<AtSign />}
-                        title="Path Aliases (@)"
-                        number="03"
-                        color="#3b82f6"
-                    >
-                        <p>Stop typing long paths recursively. Create shorthand for your favorite directories.</p>
-                        <ul>
-                            <li><strong>Usage:</strong> Type <span className="code-pill">@</span> followed by your alias (e.g., <span className="code-pill">@work</span> → <span className="code-pill">D:\Jobs\Project_Alpha\src</span>).</li>
-                            <li><strong>Deep Integration:</strong> Aliases work everywhere—inside terminal commands (<span className="code-pill">t: cd @work</span>), in the search bar, or combined with application shortcuts (<span className="code-pill">code @work</span>).</li>
-                        </ul>
-                    </GuideCard>
-
-                    <GuideCard
-                        icon={<Zap />}
-                        title="Shortcuts & Commands"
-                        number="04"
-                        color="#e879f9"
-                    >
-                        <p>Turn your frequent web searches or app launches into 1-3 letter shortcuts.</p>
-                        <ul>
-                            <li><strong>Search Shortcuts:</strong> Create shortcuts for websites (e.g., <span className="code-pill">gh</span> for GitHub). Bite automatically appends your query (<span className="code-pill">gh bite</span> searches GitHub for "bite").</li>
-                            <li><strong>App Shortcuts:</strong> Set a shortcut like <span className="code-pill">c</span> to launch VS Code.</li>
-                            <li><strong>Argument Passing:</strong> Type <span className="code-pill">c @work</span> to launch VS Code directly into your aliased project folder.</li>
-                        </ul>
-                    </GuideCard>
-
-                    <GuideCard
-                        icon={<Brain />}
-                        title="The Perceptron 'Brain'"
-                        number="05"
-                        color="#a855f7"
-                    >
-                        <p>Bite doesn't just record history; it imbibes your habits using a Naive Bayes/Perceptron stream.</p>
-                        <ul>
-                            <li><strong>Ghost Intent:</strong> Open Bite without typing. The top 5 items shown are what the Brain predicts you want right now, based on your current active window and time of day.</li>
-                            <li><strong>Contextual Boosting:</strong> If you are in a Browser, web searches float to the top. If you are in an IDE, workflows float to the top.</li>
-                            <li><strong>Privacy Mode:</strong> All behavioral learning is stored as mathematical weights. No raw logs of your activity are kept.</li>
-                        </ul>
-                    </GuideCard>
-
-                    <GuideCard
-                        icon={<Workflow />}
-                        title="Workflows"
-                        number="06"
-                        color="#06b6d4"
-                    >
-                        <p>Python-powered automation at your fingertips.</p>
-                        <ul>
-                            <li><strong>Access:</strong> Type <span className="code-pill">wf:</span> to see all your custom scripts.</li>
-                            <li><strong>Hot-Reload:</strong> Add a <span className="code-pill">.py</span> file to your Bite/workflows folder, and it appears in search instantly. No restart required.</li>
-                        </ul>
-                    </GuideCard>
-
-                    <GuideCard
-                        icon={<Clipboard />}
-                        title="Smart Clipboard"
-                        number="07"
-                        color="#3b82f6"
-                    >
-                        <p>Bite monitors your clipboard to give you utility context.</p>
-                        <ul>
-                            <li><strong>Paste History:</strong> Search through your last 50 clipboard items.</li>
-                            <li><strong>Smart Actions:</strong> If you copy a Hex color, the Details Panel shows a preview. If you copy a URL, Bite suggests opening it in your default browser.</li>
-                        </ul>
-                    </GuideCard>
-
-                    <GuideCard
-                        icon={<LinkIcon />}
-                        title="Multi-Command Bindings"
-                        number="08"
-                        color="#e879f9"
-                    >
-                        <p>Bundle multiple actions into a single keyword. The ultimate tool for setting up your environment in one go.</p>
-                        <ul>
-                            <li><strong>Example:</strong> Create a <span className="code-pill">dev</span> shortcut that opens VS Code, launches your dev server, and starts Spotify.</li>
-                            <li><strong>Activation:</strong> Type <span className="code-pill">dev</span> and hit <span className="code-pill">Enter</span>. Bite will "imbibe" the entire stack and launch all items in parallel.</li>
-                        </ul>
-                    </GuideCard>
-
-                    <GuideCard
-                        icon={<Settings />}
-                        title="Settings & Customization"
-                        number="09"
-                        color="#a855f7"
-                    >
-                        <p>Tailor Bite to your specific hardware and habits.</p>
-                        <ul>
-                            <li><strong>Adaptive Themes:</strong> "Wall" mode automatically syncs Bite's accent color with your desktop wallpaper.</li>
-                            <li><strong>Shortcut Manager:</strong> Create new 1-3 letter shortcuts. Bind to single URLs/Paths or Multi-Command lists.</li>
-                            <li><strong>Text Snippets:</strong> Store boilerplate text or code blocks. Copy them instantly.</li>
-                            <li><strong>Indexing Exclusions:</strong> Exclude heavy folders like <span className="code-pill">node_modules</span>.</li>
-                        </ul>
-                    </GuideCard>
-
-                    <GuideCard
-                        icon={<Hash />}
-                        title="Power Search Prefixes"
-                        number="10"
-                        color="#06b6d4"
-                    >
-                        <p>Specialized engines for system and developer tasks:</p>
-                        <ul>
-                            <li><strong>env:[key]:</strong> Access your Secure Env Vault for API keys and secrets.</li>
-                            <li><strong>proc:[name]:</strong> Manage running processes (kill unresponsive instances).</li>
-                            <li><strong>port:[number]:</strong> See what application is using a specific port.</li>
-                            <li><strong>clip:[query]:</strong> Explicitly search through your clipboard history.</li>
-                        </ul>
-                    </GuideCard>
-
-                    <GuideCard
-                        icon={<Calculator />}
-                        title="Developer Utilities & Math"
-                        number="11"
-                        color="#3b82f6"
-                    >
-                        <p>A Swiss Army knife for developer work:</p>
-                        <ul>
-                            <li><strong>Advanced Math:</strong> Supports trigonometry, logs, constants (<span className="code-pill">pi</span>, <span className="code-pill">e</span>), and equations.</li>
-                            <li><strong>Live Conversions:</strong> Unit conversions for distance, speed, temperature, and live currency rates.</li>
-                            <li><strong>Dev Tools:</strong> Generate UUIDs, encode/decode Base64, or generate SHA/MD5 hashes instantly.</li>
-                        </ul>
-                    </GuideCard>
+            {/* MINIMAL FOOTER CTA */}
+            <section style={{ padding: '3.5rem 1.5rem 6rem', position: 'relative', zIndex: 1 }}>
+                <div style={{ maxWidth: '750px', margin: '0 auto', textAlign: 'center' }}>
+                    <div style={{
+                        background: 'rgba(24, 23, 27, 0.8)',
+                        border: '1px solid rgba(255, 255, 255, 0.08)',
+                        borderRadius: '16px',
+                        padding: '3rem 2rem'
+                    }}>
+                        <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.2rem)', fontWeight: 800, margin: '0 0 0.5rem', color: '#fff' }}>
+                            Elevate your desktop workflow
+                        </h2>
+                        <p style={{ color: '#94a3b8', fontSize: '0.98rem', maxWidth: '480px', margin: '0 auto 2rem', lineHeight: 1.6 }}>
+                            Download Bite for {release?.os || 'Desktop'} and experience instant local search, Python workflows, and OS keychain vaults.
+                        </p>
+                        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+                            <a
+                                href={release.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="clean-btn-primary"
+                            >
+                                <Download size={18} />
+                                <span>Get Bite ({release?.version || 'v0.3.5'})</span>
+                            </a>
+                            <a
+                                href="https://github.com/Ghua8088/py-cast"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="clean-btn-secondary"
+                            >
+                                <Github size={18} />
+                                <span>Repository</span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </section>
         </div>
     );
-}
-
-function FeatureCard({ icon, title, desc, color }) {
-    return (
-        <motion.div
-            whileHover={{ y: -5 }}
-            style={{
-                padding: '2.5rem',
-                background: 'rgba(24, 24, 27, 0.5)',
-                border: '1px solid rgba(255, 255, 255, 0.05)',
-                borderRadius: '1rem',
-                borderTop: `2px solid ${color}`,
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '0.75rem',
-                transition: 'all 0.3s ease',
-                backdropFilter: 'blur(10px)'
-            }}
-        >
-            <div style={{ color: color, padding: '0.75rem', background: `rgba(255, 255, 255, 0.03)`, width: 'fit-content', borderRadius: '0.5rem' }}>{icon}</div>
-            <h3 style={{ fontSize: '1.25rem', margin: '0.5rem 0 0', fontWeight: 700, color: '#fff' }}>{title}</h3>
-            <p style={{ color: '#a1a1aa', fontSize: '0.95rem', lineHeight: 1.6, margin: 0 }}>{desc}</p>
-        </motion.div>
-    )
-}
-
-function GuideCard({ icon, title, number, color, children }) {
-    return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            whileHover={{ scale: 1.01, borderColor: color }}
-            style={{
-                padding: '2rem',
-                background: 'rgba(18, 18, 22, 0.4)',
-                border: '1px solid rgba(255, 255, 255, 0.05)',
-                borderRadius: '1.5rem',
-                position: 'relative',
-                overflow: 'hidden',
-                transition: 'all 0.3s ease',
-                backdropFilter: 'blur(10px)'
-            }}
-        >
-            <div style={{
-                position: 'absolute',
-                top: '-0.5rem',
-                right: '-0.5rem',
-                fontSize: '5rem',
-                fontWeight: 900,
-                color: color,
-                opacity: 0.03,
-                fontFamily: 'Space Grotesk, sans-serif'
-            }}>
-                {number}
-            </div>
-
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
-                <div style={{
-                    color: color,
-                    padding: '0.6rem',
-                    background: `${color}15`,
-                    borderRadius: '12px',
-                    border: `1px solid ${color}30`
-                }}>
-                    {icon}
-                </div>
-                <h3 style={{ fontSize: '1.3rem', fontWeight: 700, color: '#fff', margin: 0 }}>{title}</h3>
-            </div>
-
-            <div className="guide-content" style={{
-                color: '#94a3b8',
-                fontSize: '0.95rem',
-                lineHeight: 1.7
-            }}>
-                {children}
-            </div>
-
-            <style jsx>{`
-                ul {
-                    list-style: none;
-                    padding: 0;
-                    margin: 1rem 0 0 0;
-                }
-                li {
-                    margin-bottom: 0.75rem;
-                    padding-left: 1.5rem;
-                    position: relative;
-                }
-                li:before {
-                    content: "→";
-                    position: absolute;
-                    left: 0;
-                    color: ${color};
-                    opacity: 0.7;
-                }
-                strong {
-                    color: #e2e8f0;
-                }
-            `}</style>
-        </motion.div>
-    )
 }

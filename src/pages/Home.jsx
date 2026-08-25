@@ -173,6 +173,10 @@ export default function Home() {
                   <Github size={20} /> View Source
                 </a>
               </motion.div>
+
+              <motion.div variants={itemVariants} style={{ display: 'flex', justifyContent: 'center', width: '100%', marginTop: '2rem' }}>
+                <InstallSnippet />
+              </motion.div>
             </motion.div>
           </div>
         </section>
